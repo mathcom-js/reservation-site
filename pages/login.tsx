@@ -1,15 +1,9 @@
 export default function Login() {
   return (
     <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-4">
-      <h1 className="text-center text-lg">Make Your Reservation!</h1>
-      <div className="grid grid-cols-2">
-        <span className="text-center text-sm pt-4 pb-2 text-gray-600 border-b border-gray-200">
-          Admin
-        </span>
-        <span className="text-center text-sm pt-4 pb-2 text-gray-600 border-b border-gray-200">
-          Guest
-        </span>
-      </div>
+      <h1 className="text-center text-lg text-violet-400">
+        Make Your Reservation!
+      </h1>
       <div className="flex flex-col space-y-2">
         <span className="text-xs">ID</span>
         <input
@@ -25,8 +19,8 @@ export default function Login() {
         />
       </div>
       <button
-        className="text-xs bg-orange-500 rounded-md py-2 text-white
-      hover:bg-orange-600 transition-colors"
+        className="text-xs bg-violet-400 rounded-md py-2 text-white
+      hover:bg-violet-600 transition-colors"
       >
         Log in
       </button>
@@ -39,8 +33,8 @@ export default function Login() {
         </div>
       </div>
       <button
-        className="text-xs bg-orange-500 rounded-md py-2 text-white
-       hover:bg-orange-600 transition-colors"
+        className="text-xs bg-violet-400 rounded-md py-2 text-white
+       hover:bg-violet-600 transition-colors"
       >
         Sign in
       </button>

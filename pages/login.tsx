@@ -7,14 +7,14 @@ export default function Login() {
       <div className="flex flex-col space-y-2">
         <span className="text-xs">ID</span>
         <input
-          className="focus:outline-none focus:border-orange-400 border-2 border-gray-200 rounded-md pl-1.5"
+          className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
           type="text"
         />
       </div>
       <div className="flex flex-col space-y-2">
         <span className="text-xs">Password</span>
         <input
-          className="focus:outline-none focus:border-orange-400 border-2 border-gray-200 rounded-md pl-1.5"
+          className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
           type="password"
         />
       </div>

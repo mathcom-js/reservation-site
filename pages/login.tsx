@@ -36,7 +36,7 @@ export default function Login() {
         className="text-xs bg-violet-400 rounded-md py-2 text-white
        hover:bg-violet-600 transition-colors"
       >
-        Sign in
+        Sign up
       </button>
       <div>
         <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />

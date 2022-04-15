@@ -68,7 +68,7 @@ export default function Browse() {
     <>
       <Header />
       <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-8">
-        <h1 className="text-center text-lg text-violet-400">Browse Items</h1>
+        <h1 className="text-center text-lg text-violet-400">Browse Shops</h1>
         {itemList?.map((item) => ItemShow(item))}
       </div>
     </>

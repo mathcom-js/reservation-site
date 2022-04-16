@@ -13,6 +13,23 @@ interface ItemProps {
 const DEFAULT_IMG_URL =
   "https://cdn-lostark.game.onstove.com/uploadfiles/shop/5171483d30e344b381b869225d2544ed.jpg";
 
+const FAKE_DATA: ItemProps[] = [
+  {
+    name: "ShopTest1",
+    description: "This is awesome shop!!",
+    startTime: "17:00",
+    endTime: "24:00",
+    star: 9.8,
+  },
+  {
+    name: "ShopTest2",
+    description: "This is kind shop!!",
+    startTime: "17:00",
+    endTime: "24:00",
+    star: 5.9,
+  },
+];
+
 const ItemShow = (item: ItemProps) => {
   return (
     <div className="w-full border shadow-lg rounded-xl" key={item.name}>
@@ -48,22 +65,7 @@ const ItemShow = (item: ItemProps) => {
 };
 
 export default function Browse() {
-  const [itemList, setItemList] = useState<ItemProps[] | undefined>([
-    {
-      name: "ShopTest1",
-      description: "This is awesome shop!!",
-      startTime: "17:00",
-      endTime: "24:00",
-      star: 9.8,
-    },
-    {
-      name: "ShopTest2",
-      description: "This is kind shop!!",
-      startTime: "17:00",
-      endTime: "24:00",
-      star: 5.9,
-    },
-  ]);
+  const [itemList, setItemList] = useState<ItemProps[]>(FAKE_DATA);
   return (
     <>
       <Header />

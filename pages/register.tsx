@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../components/Button";
 import Header from "../components/Header";
 
 export default function Register() {
@@ -59,12 +60,7 @@ export default function Register() {
             </label>
           </div>
 
-          <button
-            className="text-xs bg-violet-400 rounded-md py-2 text-white
-       hover:bg-violet-600 transition-colors"
-          >
-            Sign up
-          </button>
+          <Button text="Register" />
         </div>
       </form>
     </>

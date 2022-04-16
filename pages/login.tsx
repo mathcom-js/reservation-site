@@ -1,3 +1,5 @@
+import Button from "../components/Button";
+
 export default function Login() {
   return (
     <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-4">
@@ -18,12 +20,7 @@ export default function Login() {
           type="password"
         />
       </div>
-      <button
-        className="text-xs bg-violet-400 rounded-md py-2 text-white
-      hover:bg-violet-600 transition-colors"
-      >
-        Log in
-      </button>
+      <Button text="Log In" />
       <div>
         <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />
         <div className="text-center">
@@ -32,12 +29,7 @@ export default function Login() {
           </span>
         </div>
       </div>
-      <button
-        className="text-xs bg-violet-400 rounded-md py-2 text-white
-       hover:bg-violet-600 transition-colors"
-      >
-        Sign up
-      </button>
+      <Button text="Sign Up" />
       <div>
         <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />
         <div className="text-center">

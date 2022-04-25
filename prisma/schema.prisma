@@ -14,8 +14,49 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  username  String   @unique
-  avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  username  String   @unique
+  avatar    String?
+  shops     Shop[]
+  reviews   Review[]
+  hearts    Heart[]
+}
+
+model Shop {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int      @unique
+  name        String
+  location    String
+  startTime   Int?
+  endTime     Int?
+  description String   @db.MediumText
+  imageUrl    String?
+  Reviews     Review[]
+  hearts      Heart[]
+}
+
+model Review {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  review          String   @db.MediumText
+  createdUser     User     @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  createdUserId   Int
+  commentedShop   Shop     @relation(fields: [commentedShopId], references: [id], onDelete: Cascade)
+  commentedShopId Int
+  score           Int
+}
+
+model Heart {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdUser   User     @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
+  createdUserId Int
+  likedShop     Shop     @relation(fields: [likedShopId], references: [id], onDelete: Cascade)
+  likedShopId   Int
 }

@@ -1,25 +1,14 @@
 import Button from "../components/Button";
+import { Input } from "../components/Input";
 
 export default function Login() {
   return (
-    <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-4">
+    <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-8">
       <h1 className="text-center text-lg text-violet-400">
         Make Your Reservation!
       </h1>
-      <div className="flex flex-col space-y-2">
-        <span className="text-xs">ID</span>
-        <input
-          className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-          type="text"
-        />
-      </div>
-      <div className="flex flex-col space-y-2">
-        <span className="text-xs">Password</span>
-        <input
-          className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-          type="password"
-        />
-      </div>
+      <Input name="ID" />
+      <Input name="Password" isPassword />
       <Button text="Log In" />
       <div>
         <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />

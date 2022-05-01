@@ -1,0 +1,23 @@
+import { Review, User } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import { ShopInfos } from "../../components/ShopThumbnail";
+
+const FAKE_DATA = {
+  id: 1,
+  username: "Sinclairr",
+  shops: [{ id: 1, name: "Test1" }],
+  reviews: [{ id: 1, review: "This Was good" }],
+};
+
+export default function EditProfile() {
+  return (
+    <>
+      <Header />
+      <div className="mt-20">{FAKE_DATA.username}</div>
+
+      <div></div>
+    </>
+  );
+}

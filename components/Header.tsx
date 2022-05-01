@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <div
       className="fixed top-0 bg-slate-800 w-full
-                     grid grid-cols-2 text-center py-2.5 text-sm"
+                     grid grid-cols-3 text-center py-2.5 text-sm"
     >
       <Link href="/">
         <a
@@ -22,6 +22,17 @@ export default function Header() {
           }
         >
           Register
+        </a>
+      </Link>
+      <Link href="/profile">
+        <a
+          className={
+            router.pathname.includes("/profile")
+              ? "text-violet-400"
+              : "text-white"
+          }
+        >
+          Profile
         </a>
       </Link>
     </div>

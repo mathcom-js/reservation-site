@@ -172,6 +172,7 @@ export default function ShopIdElement() {
           <div key={review.id} className="py-2 flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
+                key={star}
                 className={cls(
                   "w-5 h-5",
                   star <= review.score ? "text-yellow-400" : "text-gray-600"

@@ -1,8 +1,4 @@
-import { Review, User } from "@prisma/client";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import { ShopInfos } from "../../components/ShopThumbnail";
 
 const FAKE_DATA = {
   id: 1,

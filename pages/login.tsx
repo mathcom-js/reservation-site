@@ -1,24 +1,110 @@
+import { User } from "@prisma/client";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "../components/Button";
 import { Input } from "../components/Input";
+import { cls } from "../libs/utils";
+
+interface LoginForm {
+  name: string;
+}
+
+interface LoginReturn {
+  data: {
+    ok: boolean;
+    foundUser: User;
+  };
+}
+
+interface SignReturn {
+  data: {
+    ok: boolean;
+    newUser?: User;
+    error?: any;
+  };
+}
 
 export default function Login() {
+  const [method, setMethod] = useState<"LogIn" | "SignUp">("LogIn");
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<LoginForm>();
+
+  const setSignUp = () => {
+    setMethod("SignUp");
+  };
+  const setLogIn = () => {
+    setMethod("LogIn");
+  };
+
+  const onValid = async ({ name }: LoginForm) => {
+    if (method === "LogIn") {
+      const { data }: LoginReturn = await axios.get(`/api/user?name=${name}`);
+      if (!data.foundUser) {
+        alert("No user!");
+      } else {
+        router.push("/");
+      }
+    } else {
+      const { data }: SignReturn = await axios.post("/api/user", {
+        headers: { "Content-Type": "application/json" },
+        data: {
+          name,
+        },
+      });
+
+      if (!data.newUser) {
+        alert("Duplicate name!");
+      } else {
+        router.push("/");
+      }
+    }
+  };
+
   return (
     <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-8">
       <h1 className="text-center text-lg text-violet-400">
         Make Your Reservation!
       </h1>
-      <Input name="ID" />
-      <Input name="Password" isPassword />
-      <Button text="Log In" />
-      <div>
-        <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />
-        <div className="text-center">
-          <span className="text-xs text-gray-500 bg-white px-3">
-            No account?
-          </span>
-        </div>
+
+      <div className="grid grid-cols-2">
+        <button
+          className={cls(
+            method === "LogIn"
+              ? "text-violet-400 border-violet-400"
+              : "text-gray-400",
+            "border-b pb-2"
+          )}
+          onClick={setLogIn}
+        >
+          Log In
+        </button>
+        <button
+          className={cls(
+            method === "SignUp"
+              ? "text-violet-400 border-violet-400"
+              : "text-gray-400",
+            "border-b pb-2"
+          )}
+          onClick={setSignUp}
+        >
+          Sign Up
+        </button>
       </div>
-      <Button text="Sign Up" />
+
+      <form
+        onSubmit={handleSubmit(onValid)}
+        className="flex flex-col space-y-8"
+      >
+        <Input register={register("name")} name="Name" />
+        {method === "LogIn" ? (
+          <Button text="Log In" />
+        ) : (
+          <Button text="Sign Up" />
+        )}
+      </form>
+
       <div>
         <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />
         <div className="text-center">

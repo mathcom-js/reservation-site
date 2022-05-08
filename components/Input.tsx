@@ -1,9 +1,12 @@
+import { UseFormRegisterReturn } from "react-hook-form";
+
 interface InputProps {
   name: string;
   isPassword?: boolean;
+  register?: UseFormRegisterReturn;
 }
 
-export function Input({ name, isPassword }: InputProps) {
+export function Input({ name, isPassword, register }: InputProps) {
   return (
     <div className="flex flex-col space-y-2">
       <span className="text-xs">{name}</span>
@@ -11,6 +14,7 @@ export function Input({ name, isPassword }: InputProps) {
       <input
         className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
         type={isPassword ? "password" : "text"}
+        {...register}
       />
     </div>
   );

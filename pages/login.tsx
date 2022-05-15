@@ -47,12 +47,13 @@ export default function Login() {
         router.push("/");
       }
     } else {
-      const { data }: SignReturn = await axios.post("/api/user", {
-        headers: { "Content-Type": "application/json" },
-        data: {
-          name,
-        },
-      });
+      const { data }: SignReturn = await axios.post(
+        "/api/user",
+        { name },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!data.newUser) {
         alert("Duplicate name!");

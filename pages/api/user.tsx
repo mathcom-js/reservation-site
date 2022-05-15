@@ -23,9 +23,7 @@ export default async function handler(
 
   if (req.method === "POST") {
     const {
-      body: {
-        data: { name },
-      },
+      body: { name },
     } = req;
 
     try {

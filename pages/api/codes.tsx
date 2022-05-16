@@ -13,8 +13,7 @@ export default async function KakaoCodes(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { data } = await axios.get(login_url);
-    res.send({ data });
+    res.redirect(login_url);
   } else {
     res.status(405).end();
   }

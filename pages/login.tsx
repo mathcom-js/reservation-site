@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import Button from "../components/Button";
 import { Input } from "../components/Input";
 import { cls } from "../libs/utils";
+import { url } from "inspector";
+import { ApiError } from "next/dist/server/api-utils";
 
 interface LoginForm {
   name: string;
@@ -115,7 +117,7 @@ export default function Login() {
       <div className="grid grid-cols-2">
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
-           hover:bg-slate-50 transition-colors rounded-md"
+         hover:bg-slate-50 transition-colors rounded-md"
         >
           <svg
             className="w-5 h-5"
@@ -133,8 +135,28 @@ export default function Login() {
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
            hover:bg-slate-50 transition-colors rounded-md"
+          onClick={() => axios.get("/api/codes")}
         >
-          KaKao
+          <svg
+            className="w-8 h-8"
+            id="kakao"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="-75 -90 350 350"
+          >
+            <polygon
+              className="kakao logo"
+              fill="#3c1e1e"
+              points="45 140 40 185 90 150 45 140"
+            />
+            <ellipse
+              className="kakao logo"
+              fill="#3c1e1e"
+              cx="100"
+              cy="80"
+              rx="100"
+              ry="80"
+            />
+          </svg>
         </button>
       </div>
     </div>

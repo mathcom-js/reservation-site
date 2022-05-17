@@ -17,7 +17,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   username  String   @unique
-  avatar    String?
+  avatarId  String?
   shops     Shop[]
   reviews   Review[]
   hearts    Heart[]
@@ -31,10 +31,10 @@ model Shop {
   userId      Int
   name        String
   location    String
-  startTime   Int?
-  endTime     Int?
+  startTime   String?
+  endTime     String?
   description String   @db.MediumText
-  imageUrl    String?
+  imageId     String?
   Reviews     Review[]
   hearts      Heart[]
 }

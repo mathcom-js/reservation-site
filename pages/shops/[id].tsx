@@ -1,98 +1,44 @@
+import { Review, Shop } from "@prisma/client";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import { cls } from "../../libs/utils";
+import { cls, createImageUrl } from "../../libs/utils";
 
-interface Rev {
-  id: number;
-  review: string;
-  score: number;
+interface ShopWithDetails extends Shop {
+  user: {
+    username: string;
+  };
+  Reviews: Review[];
+  _count: {
+    hearts: number;
+  };
 }
 
-interface ShopDetailInfos {
-  id: number;
-  name: string;
-  startTime: string;
-  endTime: string;
-  imageurl?: string;
-  description: string;
-  reviewAvg: number;
-  heartCount: number;
-  location: string;
-  isLiked: boolean;
-  reviews: Rev[];
+interface ShopReturn {
+  data: {
+    ok: boolean;
+    shop: ShopWithDetails;
+  };
 }
-
-const FAKE_DATA: ShopDetailInfos[] = [
-  {
-    id: 1,
-    name: "ShopTest1",
-    description: "Peroro chicken",
-    startTime: "17:00",
-    endTime: "03:00",
-    imageurl:
-      "https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/d9cf449d-b7d5-4006-0fb7-f6aff0f81600/public",
-    reviewAvg: 7.8,
-    location: "Busan",
-    heartCount: 4,
-    isLiked: true,
-    reviews: [
-      { review: "This shop is very good", id: 1, score: 4 },
-      { review: "This shop sucks", id: 2, score: 2 },
-    ],
-  },
-  {
-    id: 2,
-    name: "ShopTest2",
-    description: "Mad guys, foods",
-    startTime: "18:00",
-    endTime: "22:00",
-    imageurl:
-      "https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/051c8ba8-4dc8-4da5-c966-8a483a61f700/public",
-    reviewAvg: 6.9,
-    location: "Suwon",
-    heartCount: 11,
-    isLiked: false,
-    reviews: [
-      { review: "This shop is perfecto", id: 3, score: 5 },
-      { review: "I hate mad guys", id: 4, score: 1 },
-    ],
-  },
-  {
-    id: 3,
-    name: "ShopTest3",
-    description: "VIP Only",
-    startTime: "16:00",
-    endTime: "23:00",
-    reviewAvg: 9.9,
-    location: "Seoul",
-    heartCount: 11,
-    isLiked: false,
-    reviews: [
-      { review: "Expensive but awesone", id: 5, score: 5 },
-      { review: "Tooo Heavy..., but taste is good", id: 6, score: 4 },
-    ],
-  },
-];
 
 export default function ShopIdElement() {
   const router = useRouter();
-  const [itemData, setItemData] = useState<ShopDetailInfos>();
   const [isUserLiked, setIsUserLiked] = useState<boolean>(false);
-  const [userLikes, setUserLikes] = useState(0);
+  const [shopDetail, setShopDetail] = useState<ShopWithDetails | undefined>();
 
   useEffect(() => {
-    const id = router.query.id?.toString();
-    if (id) {
-      setItemData(FAKE_DATA[+id - 1]);
-      setIsUserLiked(FAKE_DATA[+id - 1].isLiked);
-      setUserLikes(FAKE_DATA[+id - 1].heartCount);
+    async function getShop() {
+      const id = router.query.id?.toString();
+      if (id) {
+        const { data }: ShopReturn = await axios.get(`/api/shops/${id}`);
+        setShopDetail(data.shop);
+      }
     }
+    getShop();
   }, [router]);
 
   const onHeartClicked = () => {
-    if (isUserLiked) setUserLikes((prev) => prev - 1);
-    else setUserLikes((prev) => prev + 1);
     setIsUserLiked((prev) => !prev);
   };
 
@@ -101,7 +47,7 @@ export default function ShopIdElement() {
       <Header />
       <div className="relative">
         <h1 className="text-center text-xl text-violet-400 mt-20">
-          {itemData?.name}
+          {shopDetail?.name}
         </h1>
         <button onClick={onHeartClicked} className="absolute right-4">
           {isUserLiked ? (
@@ -133,12 +79,15 @@ export default function ShopIdElement() {
               ></path>
             </svg>
           )}
-          <span className="text-pink-500">{userLikes}</span>
+          <span className="text-pink-500">{shopDetail?._count.hearts}</span>
         </button>
       </div>
       <div className="flex justify-center items-center my-8">
-        {itemData?.imageurl ? (
-          <img src={itemData.imageurl} className="h-96" />
+        {shopDetail?.imageId ? (
+          <img
+            src={createImageUrl(shopDetail.imageId, "public")}
+            className="h-96"
+          />
         ) : (
           <div className="w-96 h-96 bg-slate-200" />
         )}
@@ -147,28 +96,28 @@ export default function ShopIdElement() {
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">⏰</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {itemData?.startTime}-{itemData?.endTime}
+            {shopDetail?.startTime}-{shopDetail?.endTime}
           </span>
         </div>
 
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">🏠</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {itemData?.location}
+            {shopDetail?.location}
           </span>
         </div>
 
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">🧾</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {itemData?.description}
+            {shopDetail?.description}
           </span>
         </div>
       </div>
 
       <div className="pl-4 mb-8">
         <div className="font-semibold text-lg mb-2">Reviews</div>
-        {itemData?.reviews.map((review) => (
+        {shopDetail?.Reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg

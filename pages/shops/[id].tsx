@@ -2,6 +2,7 @@ import { Review, Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 import Header from "../../components/Header";
 import { cls, createImageUrl } from "../../libs/utils";
 
@@ -16,27 +17,17 @@ interface ShopWithDetails extends Shop {
 }
 
 interface ShopReturn {
-  data: {
-    ok: boolean;
-    shop: ShopWithDetails;
-  };
+  ok: boolean;
+  shop: ShopWithDetails;
 }
 
 export default function ShopIdElement() {
   const router = useRouter();
   const [isUserLiked, setIsUserLiked] = useState<boolean>(false);
-  const [shopDetail, setShopDetail] = useState<ShopWithDetails | undefined>();
 
-  useEffect(() => {
-    async function getShop() {
-      const id = router.query.id?.toString();
-      if (id) {
-        const { data }: ShopReturn = await axios.get(`/api/shops/${id}`);
-        setShopDetail(data.shop);
-      }
-    }
-    getShop();
-  }, [router]);
+  const { data, error } = useSWR<ShopReturn>(
+    router.query.id ? `/api/shops/${router.query.id}` : null
+  );
 
   const onHeartClicked = () => {
     setIsUserLiked((prev) => !prev);
@@ -47,7 +38,7 @@ export default function ShopIdElement() {
       <Header />
       <div className="relative">
         <h1 className="text-center text-xl text-violet-400 mt-20">
-          {shopDetail?.name}
+          {data?.shop.name}
         </h1>
         <button onClick={onHeartClicked} className="absolute right-4">
           {isUserLiked ? (
@@ -79,13 +70,13 @@ export default function ShopIdElement() {
               ></path>
             </svg>
           )}
-          <span className="text-pink-500">{shopDetail?._count.hearts}</span>
+          <span className="text-pink-500">{data?.shop._count.hearts}</span>
         </button>
       </div>
       <div className="flex justify-center items-center my-8">
-        {shopDetail?.imageId ? (
+        {data?.shop.imageId ? (
           <img
-            src={createImageUrl(shopDetail.imageId, "public")}
+            src={createImageUrl(data?.shop.imageId, "public")}
             className="h-96"
           />
         ) : (
@@ -96,28 +87,28 @@ export default function ShopIdElement() {
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">⏰</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {shopDetail?.startTime}-{shopDetail?.endTime}
+            {data?.shop.startTime}-{data?.shop.endTime}
           </span>
         </div>
 
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">🏠</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {shopDetail?.location}
+            {data?.shop.location}
           </span>
         </div>
 
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">🧾</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {shopDetail?.description}
+            {data?.shop.description}
           </span>
         </div>
       </div>
 
       <div className="pl-4 mb-8">
         <div className="font-semibold text-lg mb-2">Reviews</div>
-        {shopDetail?.Reviews.map((review) => (
+        {data?.shop.Reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg

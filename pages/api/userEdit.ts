@@ -12,12 +12,11 @@ export default async function handler(
       body: { username, id },
     } = req;
     try {
-      console.log(id);
       const block =
         id.length > 0
           ? {
               username,
-              avatar: id,
+              avatarId: id,
             }
           : { username };
 

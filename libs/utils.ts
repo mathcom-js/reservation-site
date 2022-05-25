@@ -7,3 +7,7 @@ export function createImageUrl(id: string, variants: string | undefined) {
     ? `https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/${id}/${variants}`
     : `https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/${id}/public`;
 }
+
+export function isNullObj(obj: any) {
+  return Object.keys(obj).length === 0;
+}

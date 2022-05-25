@@ -2,7 +2,7 @@ import Header from "../../components/Header";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -22,8 +22,12 @@ interface EditReturn {
 
 export default function EditProfile() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<EditForm>();
+  const { register, handleSubmit, setValue } = useForm<EditForm>();
   const [id, setId] = useState("");
+
+  useEffect(() => {
+    setValue("username", "TEST");
+  }, []);
 
   const onValid = async ({ username, avatar }: EditForm) => {
     let block;
@@ -35,13 +39,13 @@ export default function EditProfile() {
       const formData = new FormData();
       formData.append("file", avatar[0], "test");
       const { data } = await axios.post(uploadURL, formData);
-      block = { username, id: data.result.id };
+      block = { username, avatarId: data.result.id };
     } else {
       block = { username };
     }
     const { data }: EditReturn = await axios.put("/api/userEdit", block);
 
-    if (!data.updatedUser) {
+    if (!data.ok) {
       console.log(JSON.stringify(data.error));
     } else {
       router.push("/profile");

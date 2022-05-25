@@ -16,7 +16,7 @@ interface LoginForm {
 interface LoginReturn {
   data: {
     ok: boolean;
-    foundUser: User;
+    foundUser?: User;
   };
 }
 
@@ -24,7 +24,6 @@ interface SignReturn {
   data: {
     ok: boolean;
     newUser?: User;
-    error?: any;
   };
 }
 
@@ -43,7 +42,7 @@ export default function Login() {
   const onValid = async ({ name }: LoginForm) => {
     if (method === "LogIn") {
       const { data }: LoginReturn = await axios.get(`/api/user?name=${name}`);
-      if (!data.foundUser) {
+      if (!data.ok) {
         alert("No user!");
       } else {
         router.push("/");
@@ -57,7 +56,7 @@ export default function Login() {
         }
       );
 
-      if (!data.newUser) {
+      if (!data.ok) {
         alert("Duplicate name!");
       } else {
         router.push("/");
@@ -100,7 +99,7 @@ export default function Login() {
         onSubmit={handleSubmit(onValid)}
         className="flex flex-col space-y-8"
       >
-        <Input register={register("name")} name="Name" />
+        <Input register={register("name", { required: true })} name="Name" />
         {method === "LogIn" ? (
           <Button text="Log In" />
         ) : (

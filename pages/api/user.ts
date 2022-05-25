@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "../../libs/client";
+import { withSession } from "../../libs/withSession";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     const {
       query: { name },
@@ -16,7 +14,17 @@ export default async function handler(
       },
     });
 
-    res.json({ ok: true, foundUser });
+    if (foundUser) {
+      req.session.user = {
+        id: foundUser.id,
+        username: foundUser.username,
+        avatarId: foundUser.avatarId ? foundUser.avatarId : undefined,
+      };
+      await req.session.save();
+      res.json({ ok: true, foundUser });
+    } else {
+      res.json({ ok: false });
+    }
   }
 
   if (req.method === "POST") {
@@ -24,16 +32,23 @@ export default async function handler(
       body: { name },
     } = req;
 
-    try {
+    const foundUser = await client.user.findUnique({
+      where: {
+        username: name.toString(),
+      },
+    });
+
+    if (foundUser) {
+      res.json({ ok: false });
+    } else {
       const newUser = await client.user.create({
         data: {
           username: name,
         },
       });
-
       res.json({ ok: true, newUser });
-    } catch (error) {
-      res.json({ ok: false, error });
     }
   }
 }
+
+export default withSession(handler);

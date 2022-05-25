@@ -1,31 +1,36 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import client from "../../libs/client";
+import { withSession } from "../../libs/withSession";
+import { isNullObj } from "../../libs/utils";
 
-const client = new PrismaClient();
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "PUT") {
     const {
-      body: { username, id },
+      body: { username, avatarId },
+      session: { user },
     } = req;
     try {
       const block =
-        id.length > 0
+        avatarId && !isNullObj(avatarId)
           ? {
               username,
-              avatarId: id,
+              avatarId,
             }
           : { username };
 
       const updatedUser = await client.user.update({
         where: {
-          id: 5,
+          id: user?.id,
         },
         data: block,
       });
+
+      req.session.user = {
+        id: user?.id!,
+        username: username,
+        avatarId: updatedUser.avatarId ? updatedUser.avatarId : undefined,
+      };
+      await req.session.save();
 
       res.json({ ok: true, updatedUser });
     } catch (error) {
@@ -33,3 +38,5 @@ export default async function handler(
     }
   }
 }
+
+export default withSession(handler);

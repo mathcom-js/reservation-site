@@ -19,18 +19,34 @@ interface ShopWithDetails extends Shop {
 interface ShopReturn {
   ok: boolean;
   shop: ShopWithDetails;
+  isLiked: boolean;
 }
 
 export default function ShopIdElement() {
   const router = useRouter();
-  const [isUserLiked, setIsUserLiked] = useState<boolean>(false);
-
-  const { data, error } = useSWR<ShopReturn>(
+  const { data, mutate } = useSWR<ShopReturn>(
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
 
   const onHeartClicked = () => {
-    setIsUserLiked((prev) => !prev);
+    if (!data || !router.query.id) return;
+
+    mutate(
+      {
+        ...data,
+        shop: {
+          ...data.shop,
+          _count: {
+            hearts: data.isLiked
+              ? data.shop._count.hearts - 1
+              : data.shop._count.hearts + 1,
+          },
+        },
+        isLiked: !data.isLiked,
+      },
+      false
+    );
+    axios.post(`/api/shops/heart/${router.query.id}`);
   };
 
   return (
@@ -41,7 +57,7 @@ export default function ShopIdElement() {
           {data?.shop.name}
         </h1>
         <button onClick={onHeartClicked} className="absolute right-4">
-          {isUserLiked ? (
+          {data && data?.isLiked ? (
             <svg
               className="w-5 h-5 text-pink-500"
               fill="currentColor"

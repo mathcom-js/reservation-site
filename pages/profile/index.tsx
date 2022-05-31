@@ -1,36 +1,47 @@
 import Link from "next/link";
 import Header from "../../components/Header";
 import { cls } from "../../libs/utils";
+import axios from "axios";
+import { Heart, Review, Shop, User } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../components/Button";
+import { Input } from "../../components/Input";
+import useSWR from "swr";
 
 interface UserProfileInfo {
   id: number;
   username: string;
-  shops: { id: number; name: string }[];
-  reviews: { id: number; review: string; score: number }[];
+  shops: Shop[];
+  reviews: Review[];
+  hearts: Heart[];
   avatar?: string;
 }
 
-const FAKE_DATA: UserProfileInfo = {
-  id: 1,
-  username: "Sinclairr",
-  shops: [{ id: 1, name: "Test1" }],
-  reviews: [{ id: 1, review: "This Was good", score: 5 }],
-  avatar:
-    "https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/d9cf449d-b7d5-4006-0fb7-f6aff0f81600/avatar",
-};
+interface ReturnInfo {
+  ok: boolean;
+  userWithDetails?: UserProfileInfo;
+}
 
 export default function Profile() {
+  const router = useRouter();
+  const { data } = useSWR<ReturnInfo>(`/api/userIndex`);
+
   return (
     <>
       <Header />
       <div className="mt-20 flex items-center space-x-8 ml-8">
-        {FAKE_DATA.avatar ? (
-          <img src={FAKE_DATA.avatar} className="w-12 rounded-full" />
+        {data?.userWithDetails?.avatar ? (
+          <img
+            src={data?.userWithDetails?.avatar}
+            className="w-12 rounded-full"
+          />
         ) : (
           <div className="w-12 h-12 bg-slate-500 rounded-full" />
         )}
 
-        <span>{FAKE_DATA.username}</span>
+        <span>{data?.userWithDetails?.username}</span>
 
         <Link href="/profile/edit">
           <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
@@ -41,7 +52,7 @@ export default function Profile() {
 
       <div className="ml-8 mt-8">
         <span className="text-lg font-semibold mb-8">Your Shops</span>
-        {FAKE_DATA.shops.map((shop) => (
+        {data?.userWithDetails?.shops.map((shop) => (
           <div key={shop.id} className="my-2">
             <Link href={`/shops/${shop.id}`}>
               <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
@@ -53,7 +64,7 @@ export default function Profile() {
       </div>
       <div className="ml-8 mt-8">
         <span className="text-lg font-semibold">Your Reviews</span>
-        {FAKE_DATA.reviews.map((review) => (
+        {data?.userWithDetails?.reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg

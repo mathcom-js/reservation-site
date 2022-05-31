@@ -20,7 +20,7 @@ export function Input({ name, isPassword, register }: InputProps) {
   );
 }
 
-export function TimeInput({ name }: InputProps) {
+export function TimeInput({ name, register }: InputProps) {
   return (
     <div className="flex flex-col space-y-2">
       <span className="text-xs">{name}</span>
@@ -33,13 +33,14 @@ export function TimeInput({ name }: InputProps) {
         <input
           className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
           type="time"
+          {...register}
         />
       </div>
     </div>
   );
 }
 
-export function FileInput({ name }: InputProps) {
+export function FileInput({ name, register }: InputProps) {
   return (
     <div className="flex flex-col space-y-2">
       <span className="text-xs">{name}</span>
@@ -56,7 +57,7 @@ export function FileInput({ name }: InputProps) {
             clipRule="evenodd"
           ></path>
         </svg>
-        <input type="file" className="hidden" />
+        <input type="file" className="hidden" {...register} />
       </label>
     </div>
   );

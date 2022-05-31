@@ -27,6 +27,47 @@ interface SignReturn {
   };
 }
 
+const login_with_Kakao = () => {
+  try {
+    return new Promise((resolve, reject) => {
+      if (!window.Kakao) {
+        reject("Kakao instance does not exist.");
+      }
+      window.Kakao.Auth.login({
+        success: function (response: any) {
+          const data = JSON.stringify(response);
+          console.log(data);
+          // axios
+          //   .post("/api/tokens", data, {
+          //     headers: { "Content-Type": "application/json" },
+          //   })
+          //   .then((res) => console.log(res));
+          const { access_token } = response;
+          console.log(access_token);
+          window.Kakao.API.request({
+            url: "/v2/user/me",
+            success: function (response: any) {
+              const user = response.kakao_account;
+              console.log(user);
+              user.host = "kakao";
+              const user_info = document.querySelector("#userinfo");
+              if (user_info) user_info.value = JSON.stringify(user);
+            },
+            fail: function (error: any) {
+              console.log(error);
+            },
+          });
+        },
+        fail: function (error: any) {
+          console.log(error);
+        },
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export default function Login() {
   const [method, setMethod] = useState<"LogIn" | "SignUp">("LogIn");
   const router = useRouter();
@@ -134,7 +175,7 @@ export default function Login() {
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
            hover:bg-slate-50 transition-colors rounded-md"
-          onClick={() => axios.get("/api/codes")}
+          onClick={login_with_Kakao}
         >
           <svg
             className="w-8 h-8"

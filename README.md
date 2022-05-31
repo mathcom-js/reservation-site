@@ -22,6 +22,11 @@
 
 ## DUE
 
-- 05/30: Complete front-end functions
-- 06/06: Complete API structure / reservation / Additional OAuth / Security
-- 06/12: Final insepection and deploy
+- 06/06
+  - JUN: Complete API structure, MiddleWare
+  - GON: Front-end features
+  - MIN: Front-end features
+- 06/13
+  - JUN: Deploy, Inspection, Reservation
+  - GON: Additional OAuth
+  - MIN: Reservation

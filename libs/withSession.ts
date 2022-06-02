@@ -12,7 +12,7 @@ declare module "iron-session" {
 }
 
 const options: IronSessionOptions = {
-  cookieName: "reservation-site",
+  cookieName: "reservationsite",
   password: process.env.COOKIE_PASSWORD!,
 };
 

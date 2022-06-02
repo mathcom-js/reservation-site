@@ -1,9 +1,7 @@
 import { Shop, User } from "@prisma/client";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import useSWR from "swr";
-import Header from "../components/Header";
-import ShopThumbnail from "../components/ShopThumbnail";
+import Header from "@components/Header";
+import ShopThumbnail from "@components/ShopThumbnail";
 
 interface ShopsReturn {
   ok: boolean;

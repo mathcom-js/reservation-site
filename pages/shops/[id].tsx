@@ -1,10 +1,9 @@
 import { Review, Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import useSWR from "swr";
-import Header from "../../components/Header";
-import { cls, createImageUrl } from "../../libs/utils";
+import Header from "@components/Header";
+import { cls, createImageUrl } from "@libs/utils";
 
 interface ShopWithDetails extends Shop {
   user: {

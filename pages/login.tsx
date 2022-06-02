@@ -3,11 +3,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../components/Button";
-import { Input } from "../components/Input";
-import { cls } from "../libs/utils";
-import { url } from "inspector";
-import { ApiError } from "next/dist/server/api-utils";
 
 interface LoginForm {
   name: string;

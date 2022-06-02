@@ -1,10 +1,10 @@
-import Button from "../components/Button";
-import Header from "../components/Header";
-import { FileInput, Input, TimeInput } from "../components/Input";
+import Button from "@components/Button";
+import Header from "@components/Header";
+import { FileInput, Input, TimeInput } from "@components/Input";
 import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface RegisterForm {

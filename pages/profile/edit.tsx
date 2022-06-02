@@ -1,11 +1,11 @@
-import Header from "../../components/Header";
+import Header from "@components/Header";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../../components/Button";
-import { Input } from "../../components/Input";
+import Button from "@components/Button";
+import { Input } from "@components/Input";
 
 interface EditForm {
   username: string;

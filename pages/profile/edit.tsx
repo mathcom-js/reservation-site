@@ -43,7 +43,7 @@ export default function EditProfile() {
     } else {
       block = { username };
     }
-    const { data }: EditReturn = await axios.put("/api/userEdit", block);
+    const { data }: EditReturn = await axios.put("/api/users/me", block);
 
     if (!data.ok) {
       console.log(JSON.stringify(data.error));

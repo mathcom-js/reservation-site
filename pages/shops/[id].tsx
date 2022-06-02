@@ -46,7 +46,7 @@ export default function ShopIdElement() {
       },
       false
     );
-    axios.post(`/api/shops/heart/${router.query.id}`);
+    axios.post(`/api/shops/${router.query.id}/heart`);
   };
 
   return (

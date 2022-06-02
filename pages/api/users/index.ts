@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../libs/client";
-import { withSession } from "../../libs/withSession";
+import client from "../../../libs/client";
+import { withSession } from "../../../libs/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -8,7 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       query: { name },
     } = req;
 
-    const foundUser = await client.user.findUnique({
+    const foundUser = await client.user.findFirst({
       where: {
         username: name.toString(),
       },
@@ -32,7 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       body: { name },
     } = req;
 
-    const foundUser = await client.user.findUnique({
+    const foundUser = await client.user.findFirst({
       where: {
         username: name.toString(),
       },

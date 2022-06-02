@@ -65,10 +65,7 @@ export default function Register() {
         shopimage,
       };
     }
-    const { data }: RegisterReturn = await axios.post(
-      "/api/shops/register",
-      block
-    );
+    const { data }: RegisterReturn = await axios.post("/api/shops", block);
 
     if (!data.ok) {
       console.log(JSON.stringify(data.error));

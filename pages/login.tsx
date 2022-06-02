@@ -26,8 +26,12 @@ export default function Login() {
   const [method, setMethod] = useState<"LogIn" | "SignUp">("LogIn");
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginForm>();
+  const [loading, setLoading] = useState(false);
 
   const login_with_Kakao = () => {
+    if (loading) return;
+    else setLoading(true);
+
     try {
       return new Promise((resolve, reject) => {
         if (!window.Kakao) {
@@ -56,7 +60,8 @@ export default function Login() {
                     kakaoId: id,
                     username: nickname,
                   })
-                  .then((res) => res.data.ok && router.push("/"));
+                  .then((res) => res.data.ok && router.push("/"))
+                  .finally(() => setLoading(false));
 
                 // const user = response.kakao_account;
                 // console.log(user);

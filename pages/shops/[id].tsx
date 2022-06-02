@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import Header from "@components/Header";
 import { cls, createImageUrl } from "@libs/utils";
+import { useState } from "react";
 
 interface ShopWithDetails extends Shop {
   user: {
@@ -26,9 +27,11 @@ export default function ShopIdElement() {
   const { data, mutate } = useSWR<ShopReturn>(
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
+  const [loading, setLoading] = useState(false);
 
-  const onHeartClicked = () => {
-    if (!data || !router.query.id) return;
+  const onHeartClicked = async () => {
+    if (!data || !router.query.id || loading) return;
+    else setLoading(true);
 
     mutate(
       {
@@ -45,7 +48,8 @@ export default function ShopIdElement() {
       },
       false
     );
-    axios.post(`/api/shops/${router.query.id}/heart`);
+    await axios.post(`/api/shops/${router.query.id}/heart`);
+    setLoading(false);
   };
 
   return (

@@ -28,6 +28,7 @@ export default function Register() {
   const router = useRouter();
   const { register, handleSubmit, setValue } = useForm<RegisterForm>();
   const [id, setId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onValid = async ({
     name,
@@ -37,6 +38,9 @@ export default function Register() {
     location,
     shopimage,
   }: RegisterForm) => {
+    if (loading) return;
+    else setLoading(true);
+
     let block;
     if (shopimage && shopimage.length > 0) {
       const {
@@ -69,6 +73,7 @@ export default function Register() {
 
     if (!data.ok) {
       console.log(JSON.stringify(data.error));
+      setLoading(false);
     } else {
       router.push("/");
     }

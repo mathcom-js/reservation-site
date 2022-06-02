@@ -24,12 +24,16 @@ export default function EditProfile() {
   const router = useRouter();
   const { register, handleSubmit, setValue } = useForm<EditForm>();
   const [id, setId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setValue("username", "TEST");
   }, []);
 
   const onValid = async ({ username, avatar }: EditForm) => {
+    if (loading) return;
+    else setLoading(true);
+
     let block;
     if (avatar && avatar.length > 0) {
       const {
@@ -43,10 +47,12 @@ export default function EditProfile() {
     } else {
       block = { username };
     }
+
     const { data }: EditReturn = await axios.put("/api/users/me", block);
 
     if (!data.ok) {
       console.log(JSON.stringify(data.error));
+      setLoading(false);
     } else {
       router.push("/profile");
     }

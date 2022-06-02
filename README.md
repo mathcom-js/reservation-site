@@ -30,3 +30,13 @@
   - JUN: Deploy, Inspection, Reservation
   - GON: Additional OAuth
   - MIN: Reservation
+
+## PATCH NOTE
+
+### 06-02
+
+1.  Automatic routing depends on user's session - middleware
+2.  Change and delete api as RESTful - codes are combined
+3.  Add Kakao OAuth login - delete name login, change DB
+4.  Make path more clean and delete some unused import - tsconfig
+5.  Add loading state to prevent errors - Need to be a modularize

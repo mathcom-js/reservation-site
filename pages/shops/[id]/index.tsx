@@ -5,6 +5,8 @@ import useSWR from "swr";
 import Header from "@components/Header";
 import { cls, createImageUrl } from "@libs/utils";
 import { useState } from "react";
+import Link from "next/link";
+import Button from "@components/Button";
 
 interface ShopWithDetails extends Shop {
   user: {
@@ -149,7 +151,13 @@ export default function ShopIdElement() {
         ))}
       </div>
 
-      <div></div>
+      <div className="mb-20 w-full flex justify-center">
+        <Link href={`/shops/${router.query.id}/reservation`}>
+          <a>
+            <Button text="Reservate Now!" />
+          </a>
+        </Link>
+      </div>
     </>
   );
 }

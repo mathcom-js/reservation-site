@@ -7,6 +7,7 @@ import { cls, createImageUrl } from "@libs/utils";
 import { useState } from "react";
 import Link from "next/link";
 import Button from "@components/Button";
+import { useForm } from "react-hook-form";
 
 interface ShopWithDetails extends Shop {
   user: {
@@ -22,6 +23,19 @@ interface ShopReturn {
   ok: boolean;
   shop: ShopWithDetails;
   isLiked: boolean;
+}
+
+interface ReviewForm {
+  score: number;
+  review: string;
+}
+
+interface ReviewReturn {
+  data: {
+    ok: boolean;
+    registeredReview: Review;
+    error?: any;
+  };
 }
 
 export default function ShopIdElement() {
@@ -52,6 +66,30 @@ export default function ShopIdElement() {
     );
     await axios.post(`/api/shops/${router.query.id}/heart`);
     setLoading(false);
+  };
+
+  const { register, handleSubmit, setValue } = useForm<ReviewForm>();
+  const [score, setScore] = useState(5);
+
+  const onValid = async ({ review }: ReviewForm) => {
+    if (loading) return;
+    else setLoading(true);
+
+    const { data }: ReviewReturn = await axios.post(
+      `/api/shops/${router.query.id}`,
+      {
+        score,
+        review,
+      }
+    );
+    mutate();
+
+    if (!data.ok) {
+      console.log(JSON.stringify(data.error));
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   };
 
   return (
@@ -128,7 +166,35 @@ export default function ShopIdElement() {
       </div>
 
       <div className="pl-4 mb-8">
-        <div className="font-semibold text-lg mb-2">Reviews</div>
+        <div className="flex flex-row mb-2">
+          <span className="font-semibold text-lg mr-10">Reviews</span>
+
+          <form onSubmit={handleSubmit(onValid)} className="flex w-full">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <svg
+                key={star}
+                className={cls(
+                  "w-5 h-5",
+                  star <= score ? "text-yellow-400" : "text-gray-600"
+                )}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => {
+                  setScore(star);
+                }}
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+            ))}
+            <textarea
+              className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5 w-full mr-5"
+              {...register("review")}
+            />
+            <Button text="Submit" />
+          </form>
+        </div>
+
         {data?.shop.Reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (

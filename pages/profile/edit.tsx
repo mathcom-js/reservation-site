@@ -1,11 +1,12 @@
 import Header from "@components/Header";
-import { User } from "@prisma/client";
+import { User, Shop, Review } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/Button";
 import { Input } from "@components/Input";
+import useSWR from "swr";
 
 interface EditForm {
   username: string;
@@ -20,15 +21,34 @@ interface EditReturn {
   };
 }
 
+interface UserProfileInfo extends User {
+  shops: Shop[];
+  reviews: Review[];
+  hearts: {
+    select: {
+      likedShopId: true;
+    };
+  };
+}
+
+interface ReturnInfo {
+  ok: boolean;
+  userWithDetails: UserProfileInfo;
+}
 export default function EditProfile() {
   const router = useRouter();
   const { register, handleSubmit, setValue } = useForm<EditForm>();
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { data } = useSWR<ReturnInfo>("/api/users/me");
+  console.log(data?.ok);
+
   useEffect(() => {
-    setValue("username", "TEST");
-  }, []);
+    if (data && data.ok) {
+      setValue("username", data.userWithDetails.username);
+    }
+  }, [data]);
 
   const onValid = async ({ username, avatar }: EditForm) => {
     if (loading) return;

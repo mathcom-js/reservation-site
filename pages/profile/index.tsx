@@ -1,17 +1,18 @@
 import Link from "next/link";
 import Header from "@components/Header";
-import { cls } from "@libs/utils";
+import { cls, createImageUrl } from "@libs/utils";
 import { Heart, Review, Shop, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
-interface UserProfileInfo {
-  id: number;
-  username: string;
+interface UserProfileInfo extends User {
   shops: Shop[];
   reviews: Review[];
-  hearts: Heart[];
-  avatar?: string;
+  hearts: {
+    select: {
+      likedShopId: true;
+    };
+  };
 }
 
 interface ReturnInfo {
@@ -27,9 +28,9 @@ export default function Profile() {
     <>
       <Header />
       <div className="mt-20 flex items-center space-x-8 ml-8">
-        {data?.userWithDetails?.avatar ? (
+        {data?.userWithDetails?.avatarId ? (
           <img
-            src={data?.userWithDetails?.avatar}
+            src={createImageUrl(data?.userWithDetails.avatarId, "public")}
             className="w-12 rounded-full"
           />
         ) : (

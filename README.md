@@ -40,3 +40,9 @@
 3.  Add Kakao OAuth login - delete name login, change DB
 4.  Make path more clean and delete some unused import - tsconfig
 5.  Add loading state to prevent errors - Need to be a modularize
+
+### 06-06
+
+1.  Fix profile fecth and edit function
+2.  Add delete function for shop and review
+3.  Add review register function

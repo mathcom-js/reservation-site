@@ -23,6 +23,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             id: true,
             review: true,
             score: true,
+            createdUserId: true,
+            createdUser: true,
           },
         },
         user: {
@@ -62,6 +64,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
 
       res.json({ ok: true, registeredReview });
+    } catch (error) {
+      res.json({ ok: false, error });
+    }
+  }
+
+  if (req.method === "DELETE") {
+    const {
+      query: { id },
+      session: { user },
+    } = req;
+
+    try {
+      const deletedShop = await client.shop.delete({
+        where: { id: +id },
+      });
+
+      res.json({ ok: true, deletedShop });
     } catch (error) {
       res.json({ ok: false, error });
     }

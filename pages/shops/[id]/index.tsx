@@ -1,4 +1,4 @@
-import { Review, Shop } from "@prisma/client";
+import { Review, Shop, User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -9,11 +9,19 @@ import Link from "next/link";
 import Button from "@components/Button";
 import { useForm } from "react-hook-form";
 
+interface ReviewWithUser extends User {
+  id: number;
+  review: string;
+  score: number;
+  createdUserId: number;
+  createdUser: User;
+}
+
 interface ShopWithDetails extends Shop {
   user: {
     username: string;
   };
-  Reviews: Review[];
+  Reviews: ReviewWithUser[];
   _count: {
     hearts: number;
   };
@@ -36,6 +44,37 @@ interface ReviewReturn {
     registeredReview: Review;
     error?: any;
   };
+}
+
+interface ReviewDeleteReturn {
+  data: {
+    ok: boolean;
+    deletedReview: Review;
+    error?: any;
+  };
+}
+
+interface ShopDeleteReturn {
+  data: {
+    ok: boolean;
+    deletedShop: Shop;
+    error?: any;
+  };
+}
+
+interface UserProfileInfo extends User {
+  shops: Shop[];
+  reviews: Review[];
+  hearts: {
+    select: {
+      likedShopId: true;
+    };
+  };
+}
+
+interface ReturnInfo {
+  ok: boolean;
+  userWithDetails: UserProfileInfo;
 }
 
 export default function ShopIdElement() {
@@ -90,6 +129,51 @@ export default function ShopIdElement() {
     } else {
       setLoading(false);
     }
+  };
+
+  const { data: retdata } = useSWR<ReturnInfo>("/api/users/me");
+  const [reviewId, setReviewId] = useState(Number);
+
+  const onReviewDeleteClicked = async () => {
+    if (loading) return;
+    else setLoading(true);
+
+    const { data }: ReviewDeleteReturn = await axios.delete(
+      `/api/shops/${router.query.id}/review/${reviewId}`
+    );
+    mutate();
+
+    if (!data.ok) {
+      console.log(JSON.stringify(data.error));
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const onShopDeleteClicked = async () => {
+    if (loading) return;
+    else setLoading(true);
+
+    if (confirm("정말로 삭제하시겠습니까")) {
+      const deleteCheck = prompt("진짜삭제?", "가게의 이름을 입력해주세요");
+      if (data && deleteCheck === data.shop.name) {
+        alert("와! 삭제!");
+        const { data }: ShopDeleteReturn = await axios.delete(
+          `/api/shops/${router.query.id}`
+        );
+
+        if (!data.ok) {
+          console.log(JSON.stringify(data.error));
+        } else {
+          router.push("/");
+        }
+      } else {
+        alert("가게 이름이 틀립니다. 삭제실패");
+      }
+    } else {
+    }
+    setLoading(false);
   };
 
   return (
@@ -165,6 +249,14 @@ export default function ShopIdElement() {
         </div>
       </div>
 
+      <div className="mb-5 w-full flex justify-center">
+        <Link href={`/shops/${router.query.id}/reservation`}>
+          <a>
+            <Button text="Reservate Now!" />
+          </a>
+        </Link>
+      </div>
+
       <div className="pl-4 mb-8">
         <div className="flex flex-row mb-2">
           <span className="font-semibold text-lg mr-10">Reviews</span>
@@ -197,6 +289,7 @@ export default function ShopIdElement() {
 
         {data?.shop.Reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
+            <span className="ml-8 w-20">{review.createdUser.username}</span>
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
@@ -213,16 +306,39 @@ export default function ShopIdElement() {
             ))}
 
             <span className="ml-8">{review.review}</span>
+            <span className="ml-auto mr-8">
+              {retdata &&
+              review.createdUserId === retdata.userWithDetails.id ? (
+                <button
+                  onClick={() => {
+                    setReviewId(review.id);
+                    onReviewDeleteClicked();
+                  }}
+                >
+                  Delete
+                </button>
+              ) : (
+                <></>
+              )}
+            </span>
           </div>
         ))}
       </div>
 
       <div className="mb-20 w-full flex justify-center">
-        <Link href={`/shops/${router.query.id}/reservation`}>
-          <a>
-            <Button text="Reservate Now!" />
-          </a>
-        </Link>
+        {data && retdata && data.shop.userId === retdata.userWithDetails.id ? (
+          <button
+            onClick={() => {
+              onShopDeleteClicked();
+            }}
+            className="text-xs bg-red-400 rounded-md py-2
+            text-white hover:bg-red-600 transition-colors"
+          >
+            Shop Delete
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

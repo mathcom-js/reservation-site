@@ -312,13 +312,15 @@ export default function ShopIdElement() {
             ))}
 
             <span className="ml-8">{review.review}</span>
-            <span className="ml-auto mr-8">
+            <form
+              onSubmit={handleSubmit(onReviewDeleteClicked)}
+              className="ml-auto mr-8"
+            >
               {retdata &&
               review.createdUserId === retdata.userWithDetails.id ? (
                 <button
-                  onClick={async () => {
-                    await setReviewId(review.id);
-                    onReviewDeleteClicked();
+                  onClick={() => {
+                    setReviewId(review.id);
                   }}
                 >
                   Delete
@@ -326,7 +328,7 @@ export default function ShopIdElement() {
               ) : (
                 <></>
               )}
-            </span>
+            </form>
           </div>
         ))}
       </div>

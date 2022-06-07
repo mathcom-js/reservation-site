@@ -4,7 +4,20 @@ import { withSession } from "@libs/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const shops = await client.shop.findMany({});
+    const shops = await client.shop.findMany({
+      include: {
+        Reviews: {
+          select: {
+            score: true,
+          },
+        },
+        _count: {
+          select: {
+            hearts: true,
+          },
+        },
+      },
+    });
     res.json({ ok: true, shops });
   }
   if (req.method === "POST") {

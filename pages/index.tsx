@@ -1,15 +1,24 @@
-import { Shop, User } from "@prisma/client";
+import { Shop, Review, User } from "@prisma/client";
 import useSWR from "swr";
 import Header from "@components/Header";
 import ShopThumbnail from "@components/ShopThumbnail";
 
+interface ShopInfo extends Shop {
+  Review: Review[];
+  _count: {
+    Reviews: number;
+    hearts: number;
+  };
+}
+
 interface ShopsReturn {
   ok: boolean;
-  shops: Shop[];
+  shops: ShopInfo[];
 }
 
 export default function Browse() {
   const { data, error } = useSWR<ShopsReturn>("/api/shops");
+  console.log(data?.shops[0]);
   return (
     <>
       <Header />

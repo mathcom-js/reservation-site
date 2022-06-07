@@ -6,14 +6,13 @@
 2. Check that api with session always contains a user
 3. Edit shop information
 4. Fix a review delete bug
-5. Show average score and the number of hearts at index
-6. Delete old reservations
-7. Make shop accepts only one person at the same time.
-8. Make user reserve only one shop at the same time.
-9. Check validity of reservation time
-10. Naver OAuth
-11. Planetscale Deployment
-12. Vercel Deployment
+5. Delete old reservations
+6. Make shop accepts only one person at the same time.
+7. Make user reserve only one shop at the same time.
+8. Check validity of reservation time
+9. Naver OAuth
+10. Planetscale Deployment
+11. Vercel Deployment
 
 ## PATCH NOTE
 
@@ -37,4 +36,5 @@
 
 ### 06-07
 
-1. Add index
+1. Add index at DB
+2. Add review average score and hearts

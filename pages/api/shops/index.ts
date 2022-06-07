@@ -8,20 +8,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.json({ ok: true, shops });
   }
   if (req.method === "POST") {
-    const {
-      body: { name, startTime, endTime, description, location, imageId },
-    } = req;
+    const { body } = req;
 
     try {
       const registeredShop = await client.shop.create({
         data: {
           user: { connect: { id: req.session.user?.id } },
-          name,
-          startTime,
-          endTime,
-          description,
-          location,
-          imageId,
+          ...body,
         },
       });
 

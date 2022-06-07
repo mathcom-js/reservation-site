@@ -41,6 +41,7 @@ export default function Register() {
     if (loading) return;
     else setLoading(true);
 
+    const box = { name, startTime, endTime, description, location };
     let block;
     if (shopimage && shopimage.length > 0) {
       const {
@@ -51,23 +52,11 @@ export default function Register() {
       formData.append("file", shopimage[0], "test");
       const { data } = await axios.post(uploadURL, formData);
       block = {
-        name,
-        startTime,
-        endTime,
-        description,
-        location,
-        shopimage,
+        ...box,
         imageId: data.result.id,
       };
     } else {
-      block = {
-        name,
-        startTime,
-        endTime,
-        description,
-        location,
-        shopimage,
-      };
+      block = box;
     }
     const { data }: RegisterReturn = await axios.post("/api/shops", block);
 
@@ -116,10 +105,7 @@ export default function Register() {
             register={register("location", { required: true })}
             name="Your Location"
           />
-          <FileInput
-            register={register("shopimage", { required: true })}
-            name="Your Shop Image"
-          />
+          <FileInput register={register("shopimage")} name="Your Shop Image" />
 
           <Button text="Register" />
         </div>

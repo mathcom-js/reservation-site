@@ -17,7 +17,6 @@ interface ShopsReturn {
 
 export default function Browse() {
   const { data, error } = useSWR<ShopsReturn>("/api/shops");
-  console.log(data?.shops[0]);
   return (
     <>
       <Header />

@@ -10,7 +10,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     } = req;
     const shop = await client.shop.findUnique({
       where: {
-        id: +id.toString(),
+        id: +id,
       },
       include: {
         _count: {
@@ -45,42 +45,48 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.json({ ok: true, shop, isLiked });
   }
 
-  if (req.method === "POST") {
-    const {
-      query: { id },
-      body: { score, review },
-      session: { user },
-    } = req;
-    console.log(score);
-
-    try {
-      const registeredReview = await client.review.create({
-        data: {
-          review,
-          createdUser: { connect: { id: user?.id } },
-          commentedShop: { connect: { id: +id } },
-          score: +score,
-        },
-      });
-
-      res.json({ ok: true, registeredReview });
-    } catch (error) {
-      res.json({ ok: false, error });
-    }
-  }
-
   if (req.method === "DELETE") {
     const {
       query: { id },
       session: { user },
     } = req;
-
     try {
       const deletedShop = await client.shop.delete({
         where: { id: +id },
       });
 
       res.json({ ok: true, deletedShop });
+    } catch (error) {
+      res.json({ ok: false, error });
+    }
+  }
+
+  if (req.method === "PUT") {
+    const {
+      body,
+      query: { id },
+      session: { user },
+    } = req;
+    try {
+      const EditedShop = await client.shop.update({
+        where: { id: +id.toString() },
+        data: body,
+      });
+
+      const shopUser = await client.shop.findUnique({
+        where: {
+          id: +id,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (shopUser?.userId === user?.id) {
+        res.json({ ok: true, EditedShop });
+      } else {
+        res.json({ ok: false, error: "Can't access" });
+      }
     } catch (error) {
       res.json({ ok: false, error });
     }

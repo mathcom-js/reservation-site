@@ -38,3 +38,7 @@
 
 1. Add index at DB
 2. Add review average score and hearts
+3. Fix profile edit function
+4. Fix shop register function
+5. Add shop edit function
+6. Change review register api path

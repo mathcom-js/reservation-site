@@ -115,7 +115,7 @@ export default function ShopIdElement() {
     else setLoading(true);
 
     const { data }: ReviewReturn = await axios.post(
-      `/api/shops/${router.query.id}`,
+      `/api/shops/${router.query.id}/review`,
       {
         score,
         review,

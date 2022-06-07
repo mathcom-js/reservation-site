@@ -34,3 +34,7 @@
 1.  Fix profile fecth and edit function
 2.  Add delete function for shop and review
 3.  Add review register function
+
+### 06-07
+
+1. Add index

@@ -40,6 +40,8 @@ model Shop {
   Reviews      Review[]
   hearts       Heart[]
   reservations Reservation[]
+
+  @@index([userId])
 }
 
 model Review {
@@ -52,6 +54,9 @@ model Review {
   commentedShop   Shop     @relation(fields: [commentedShopId], references: [id], onDelete: Cascade)
   commentedShopId Int
   score           Int
+
+  @@index([createdUserId])
+  @@index([commentedShopId])
 }
 
 model Heart {
@@ -62,6 +67,9 @@ model Heart {
   createdUserId Int
   likedShop     Shop     @relation(fields: [likedShopId], references: [id], onDelete: Cascade)
   likedShopId   Int
+
+  @@index([createdUserId])
+  @@index([likedShopId])
 }
 
 model Reservation {
@@ -74,4 +82,7 @@ model Reservation {
   reservationUserId Int
   reservationShop   Shop     @relation(fields: [reservationShopId], references: [id], onDelete: Cascade)
   reservationShopId Int
+
+  @@index([reservationUserId])
+  @@index([reservationShopId])
 }

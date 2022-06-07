@@ -41,29 +41,32 @@ export default function EditProfile() {
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { data } = useSWR<ReturnInfo>("/api/users/me");
-  console.log(data?.ok);
+  const { data: me } = useSWR<ReturnInfo>("/api/users/me");
 
   useEffect(() => {
-    if (data && data.ok) {
-      setValue("username", data.userWithDetails.username);
+    if (me && me.ok) {
+      setValue("username", me.userWithDetails.username);
     }
-  }, [data]);
+  }, [me]);
 
   const onValid = async ({ username, avatar }: EditForm) => {
     if (loading) return;
     else setLoading(true);
 
-    let block;
-    if (avatar && avatar.length > 0) {
-      const {
-        data: { uploadURL },
-      } = await axios.get("/api/image");
+    if (me && username === me.userWithDetails.username && !avatar) {
+      router.push("/profile");
+    }
 
-      const formData = new FormData();
+    let block;
+    const {
+      data: { uploadURL },
+    } = await axios.get("/api/image");
+
+    const formData = new FormData();
+    if (avatar && avatar.length > 0) {
       formData.append("file", avatar[0], "test");
-      const { data } = await axios.post(uploadURL, formData);
-      block = { username, avatarId: data.result.id };
+      const { data: idReturn } = await axios.post(uploadURL, formData);
+      block = { username, avatarId: idReturn.result.id };
     } else {
       block = { username };
     }

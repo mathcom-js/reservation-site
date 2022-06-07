@@ -42,3 +42,4 @@
 4. Fix shop register function
 5. Add shop edit function
 6. Change review register api path
+7. Fix review delete function

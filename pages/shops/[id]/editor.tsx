@@ -1,13 +1,14 @@
 import Button from "@components/Button";
 import Header from "@components/Header";
 import { FileInput, Input, TimeInput } from "@components/Input";
-import { Shop } from "@prisma/client";
+import { Shop, User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useSWR, { mutate } from "swr";
 
-interface RegisterForm {
+interface EditedForm {
   name: string;
   startTime: string;
   endTime: string;
@@ -16,19 +17,60 @@ interface RegisterForm {
   shopimage: FileList;
 }
 
-interface RegisterReturn {
+interface EditedReturn {
   data: {
     ok: boolean;
-    registeredShop?: Shop;
+    EditedShop?: Shop;
     error?: any;
   };
 }
 
+interface ReviewWithUser extends User {
+  id: number;
+  review: string;
+  score: number;
+  createdUserId: number;
+  createdUser: User;
+}
+
+interface ShopWithDetails extends Shop {
+  user: {
+    username: string;
+  };
+  Reviews: ReviewWithUser[];
+  _count: {
+    hearts: number;
+  };
+}
+
+interface ShopReturn {
+  ok: boolean;
+  shop?: ShopWithDetails;
+}
+
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit, setValue } = useForm<RegisterForm>();
+  const { register, handleSubmit, setValue } = useForm<EditedForm>();
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { data: shopData, mutate } = useSWR<ShopReturn>(
+    router.query.id ? `/api/shops/${router.query.id}` : null
+  );
+
+  useEffect(() => {
+    if (shopData && shopData.shop) {
+      setValue("name", shopData.shop.name);
+      setValue("description", shopData.shop.description);
+      setValue("location", shopData.shop.location);
+      if (shopData.shop.startTime) {
+        setValue("startTime", shopData.shop.startTime);
+      }
+      if (shopData.shop.endTime) {
+        setValue("endTime", shopData.shop.endTime);
+      }
+    }
+  }, [shopData]);
 
   const onValid = async ({
     name,
@@ -37,12 +79,13 @@ export default function Register() {
     description,
     location,
     shopimage,
-  }: RegisterForm) => {
+  }: EditedForm) => {
     if (loading) return;
     else setLoading(true);
 
     const box = { name, startTime, endTime, description, location };
     let block;
+
     if (shopimage && shopimage.length > 0) {
       const {
         data: { uploadURL },
@@ -51,20 +94,24 @@ export default function Register() {
       const formData = new FormData();
       formData.append("file", shopimage[0], "test");
       const { data } = await axios.post(uploadURL, formData);
-      block = {
-        ...box,
-        imageId: data.result.id,
-      };
+      block = { ...box, imageId: data.result.id };
     } else {
       block = box;
     }
-    const { data }: RegisterReturn = await axios.post("/api/shops", block);
+
+    const { data }: EditedReturn = await axios.put(
+      `/api/shops/${router.query.id}`,
+      block
+    );
+    console.log(data.ok);
+    mutate();
 
     if (!data.ok) {
       console.log(JSON.stringify(data.error));
+      alert("access denied");
       setLoading(false);
     } else {
-      router.push("/");
+      router.push(`/shops/${router.query.id}`);
     }
   };
 
@@ -72,9 +119,9 @@ export default function Register() {
     <>
       <Header />
       <form onSubmit={handleSubmit(onValid)}>
-        <div className="max-w-xl w-full flex flex-col mx-auto my-20 space-y-8">
+        <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-8">
           <h1 className="text-center text-lg text-violet-400">
-            Register Your Shop
+            Edit Your Shop
           </h1>
 
           <Input

@@ -115,7 +115,7 @@ export default function ShopIdElement() {
     else setLoading(true);
 
     const { data }: ReviewReturn = await axios.post(
-      `/api/shops/${router.query.id}`,
+      `/api/shops/${router.query.id}/review`,
       {
         score,
         review,
@@ -132,7 +132,7 @@ export default function ShopIdElement() {
   };
 
   const { data: retdata } = useSWR<ReturnInfo>("/api/users/me");
-  const [reviewId, setReviewId] = useState(Number);
+  const [reviewId, setReviewId] = useState<number | undefined>();
 
   const onReviewDeleteClicked = async () => {
     if (loading) return;
@@ -149,6 +149,12 @@ export default function ShopIdElement() {
     } else {
       setLoading(false);
     }
+  };
+
+  const onShopEditClicked = async () => {
+    if (loading) return;
+    else setLoading(true);
+    router.push(`/shops/${router.query.id}/editor`);
   };
 
   const onShopDeleteClicked = async () => {
@@ -310,8 +316,8 @@ export default function ShopIdElement() {
               {retdata &&
               review.createdUserId === retdata.userWithDetails.id ? (
                 <button
-                  onClick={() => {
-                    setReviewId(review.id);
+                  onClick={async () => {
+                    await setReviewId(review.id);
                     onReviewDeleteClicked();
                   }}
                 >
@@ -327,15 +333,26 @@ export default function ShopIdElement() {
 
       <div className="mb-20 w-full flex justify-center">
         {data && retdata && data.shop.userId === retdata.userWithDetails.id ? (
-          <button
-            onClick={() => {
-              onShopDeleteClicked();
-            }}
-            className="text-xs bg-red-400 rounded-md py-2
-            text-white hover:bg-red-600 transition-colors"
-          >
-            Shop Delete
-          </button>
+          <div>
+            <button
+              onClick={() => {
+                onShopEditClicked();
+              }}
+              className="text-xs bg-blue-400 rounded-md py-2
+            text-white hover:bg-blue-600 transition-colors mr-5 px-2"
+            >
+              Shop Edit
+            </button>
+            <button
+              onClick={() => {
+                onShopDeleteClicked();
+              }}
+              className="text-xs bg-red-400 rounded-md py-2
+            text-white hover:bg-red-600 transition-colors ml-5 px-2"
+            >
+              Shop Delete
+            </button>
+          </div>
         ) : (
           <></>
         )}

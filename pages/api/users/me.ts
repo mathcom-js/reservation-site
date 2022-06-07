@@ -33,28 +33,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method === "PUT") {
     const {
-      body: { username, avatarId },
+      body,
       session: { user },
     } = req;
     try {
-      const block =
-        avatarId && !isNullObj(avatarId)
-          ? {
-              username,
-              avatarId,
-            }
-          : { username };
-
       const updatedUser = await client.user.update({
         where: {
           id: user?.id,
         },
-        data: block,
+        data: body,
       });
 
       req.session.user = {
         id: user?.id!,
-        username: username,
+        username: updatedUser.username,
         avatarId: updatedUser.avatarId ? updatedUser.avatarId : undefined,
       };
       await req.session.save();

@@ -4,9 +4,8 @@ import Header from "@components/Header";
 import ShopThumbnail from "@components/ShopThumbnail";
 
 interface ShopInfo extends Shop {
-  Review: Review[];
+  Reviews: Review[];
   _count: {
-    Reviews: number;
     hearts: number;
   };
 }

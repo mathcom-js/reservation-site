@@ -53,8 +53,9 @@ export default function Register() {
     );
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
-      alert("access denied");
+      if (data.error === "time")
+        alert("duplicate with another reservation time");
+      if (data.error === "access") alert("access denied");
       setLoading(false);
     } else {
       router.push(`/shops/${router.query.id}`);

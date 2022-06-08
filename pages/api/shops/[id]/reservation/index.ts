@@ -27,25 +27,45 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (shopUser?.userId !== user?.id) {
-    const newReservation = await client.reservation.create({
-      data: {
-        start,
-        end,
-        reservationShop: {
-          connect: {
-            id: +id.toString(),
+    const existedReservation = await client.reservation.findMany({
+      where: {
+        reservationUserId: +user?.id!,
+        AND: [
+          {
+            end: {
+              gt: start,
+            },
+            start: {
+              lt: end,
+            },
           },
-        },
-        reservationUser: {
-          connect: {
-            id: user?.id,
-          },
-        },
+        ],
       },
     });
-    res.json({ ok: true, newReservation });
+
+    if (existedReservation.length === 0) {
+      const newReservation = await client.reservation.create({
+        data: {
+          start,
+          end,
+          reservationShop: {
+            connect: {
+              id: +id.toString(),
+            },
+          },
+          reservationUser: {
+            connect: {
+              id: user?.id,
+            },
+          },
+        },
+      });
+      res.json({ ok: true, newReservation });
+    } else {
+      res.json({ ok: false, error: "time" });
+    }
   } else {
-    res.json({ ok: false, error: "Can't access" });
+    res.json({ ok: false, error: "access" });
   }
 }
 

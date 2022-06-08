@@ -1,10 +1,10 @@
 import Button from "@components/Button";
 import Header from "@components/Header";
-import { FileInput, Input, TimeInput } from "@components/Input";
+import { ImageInput, Input, TimeInput } from "@components/Input";
 import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface RegisterForm {
@@ -26,9 +26,18 @@ interface RegisterReturn {
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit, setValue } = useForm<RegisterForm>();
-  const [id, setId] = useState("");
+  const { register, handleSubmit, watch } = useForm<RegisterForm>();
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
+
+  const imageBlobs = watch("shopimage");
+
+  useEffect(() => {
+    if (imageBlobs && imageBlobs.length > 0) {
+      const blob = imageBlobs[0];
+      setPreviewUrl(URL.createObjectURL(blob));
+    }
+  }, [imageBlobs]);
 
   const onValid = async ({
     name,
@@ -105,7 +114,11 @@ export default function Register() {
             register={register("location", { required: true })}
             name="Your Location"
           />
-          <FileInput register={register("shopimage")} name="Your Shop Image" />
+          <ImageInput
+            register={register("shopimage")}
+            name="Your Shop Image"
+            previewUrl={previewUrl}
+          />
 
           <Button text="Register" />
         </div>

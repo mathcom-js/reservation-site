@@ -1,6 +1,6 @@
 import Button from "@components/Button";
 import Header from "@components/Header";
-import { FileInput, Input, TimeInput } from "@components/Input";
+import { ImageInput, Input, TimeInput } from "@components/Input";
 import { Shop, User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -50,13 +50,22 @@ interface ShopReturn {
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit, setValue } = useForm<EditedForm>();
-  const [id, setId] = useState("");
+  const { register, handleSubmit, setValue, watch } = useForm<EditedForm>();
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
 
   const { data: shopData, mutate } = useSWR<ShopReturn>(
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
+
+  const imageBlobs = watch("shopimage");
+
+  useEffect(() => {
+    if (imageBlobs && imageBlobs.length > 0) {
+      const blob = imageBlobs[0];
+      setPreviewUrl(URL.createObjectURL(blob));
+    }
+  }, [imageBlobs]);
 
   useEffect(() => {
     if (shopData && shopData.shop) {
@@ -152,7 +161,11 @@ export default function Register() {
             register={register("location", { required: true })}
             name="Your Location"
           />
-          <FileInput register={register("shopimage")} name="Your Shop Image" />
+          <ImageInput
+            register={register("shopimage")}
+            name="Your Shop Image"
+            previewUrl={previewUrl}
+          />
 
           <Button text="Register" />
         </div>

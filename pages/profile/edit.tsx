@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/Button";
-import { Input } from "@components/Input";
+import { ImageInput, Input } from "@components/Input";
 import useSWR from "swr";
 
 interface EditForm {
@@ -37,17 +37,25 @@ interface ReturnInfo {
 }
 export default function EditProfile() {
   const router = useRouter();
-  const { register, handleSubmit, setValue } = useForm<EditForm>();
-  const [id, setId] = useState("");
+  const { register, handleSubmit, setValue, watch } = useForm<EditForm>();
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
 
   const { data: me } = useSWR<ReturnInfo>("/api/users/me");
+  const avatarBlobs = watch("avatar");
 
   useEffect(() => {
     if (me && me.ok) {
       setValue("username", me.userWithDetails.username);
     }
   }, [me]);
+
+  useEffect(() => {
+    if (avatarBlobs && avatarBlobs.length > 0) {
+      const blob = avatarBlobs[0];
+      setPreviewUrl(URL.createObjectURL(blob));
+    }
+  }, [avatarBlobs]);
 
   const onValid = async ({ username, avatar }: EditForm) => {
     if (loading) return;
@@ -97,14 +105,11 @@ export default function EditProfile() {
             register={register("username", { required: true })}
             name="Username"
           />
-          <input {...register("avatar")} type="file" accept="image/*" />
-          {id ? (
-            <img
-              src={`https://imagedelivery.net/BDH_sV5MMFDjmj9Ky8ZKTQ/${id}/avatar`}
-            />
-          ) : (
-            <div></div>
-          )}
+          <ImageInput
+            name="Avatar"
+            register={register("avatar")}
+            previewUrl={previewUrl}
+          />
 
           <Button text="Submit" />
         </form>

@@ -68,11 +68,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       session: { user },
     } = req;
     try {
-      const EditedShop = await client.shop.update({
-        where: { id: +id.toString() },
-        data: body,
-      });
-
       const shopUser = await client.shop.findUnique({
         where: {
           id: +id,
@@ -83,6 +78,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
 
       if (shopUser?.userId === user?.id) {
+        const EditedShop = await client.shop.update({
+          where: { id: +id.toString() },
+          data: body,
+        });
         res.json({ ok: true, EditedShop });
       } else {
         res.json({ ok: false, error: "Can't access" });

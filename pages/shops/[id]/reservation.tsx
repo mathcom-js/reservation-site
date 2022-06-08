@@ -51,7 +51,14 @@ export default function Register() {
         end: endDate,
       }
     );
-    console.log(data);
+
+    if (!data.ok) {
+      console.log(JSON.stringify(data.error));
+      alert("access denied");
+      setLoading(false);
+    } else {
+      router.push(`/shops/${router.query.id}`);
+    }
 
     setLoading(false);
   };

@@ -17,24 +17,36 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  const newReservation = await client.reservation.create({
-    data: {
-      start,
-      end,
-      reservationShop: {
-        connect: {
-          id: +id.toString(),
-        },
-      },
-      reservationUser: {
-        connect: {
-          id: user?.id,
-        },
-      },
+  const shopUser = await client.shop.findUnique({
+    where: {
+      id: +id,
+    },
+    select: {
+      userId: true,
     },
   });
 
-  res.json({ ok: true, newReservation });
+  if (shopUser?.userId !== user?.id) {
+    const newReservation = await client.reservation.create({
+      data: {
+        start,
+        end,
+        reservationShop: {
+          connect: {
+            id: +id.toString(),
+          },
+        },
+        reservationUser: {
+          connect: {
+            id: user?.id,
+          },
+        },
+      },
+    });
+    res.json({ ok: true, newReservation });
+  } else {
+    res.json({ ok: false, error: "Can't access" });
+  }
 }
 
 export default withSession(handler);

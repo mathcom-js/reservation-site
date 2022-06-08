@@ -12,18 +12,43 @@ interface ReservateForm {
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<ReservateForm>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<ReservateForm>();
   const [loading, setLoading] = useState(false);
 
   const onValid = async ({ start, end }: ReservateForm) => {
     if (loading) return;
     else setLoading(true);
 
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (startDate < new Date()) {
+      setError("start", {
+        type: "string",
+        message: "Start time should be later than now.",
+      });
+      setLoading(false);
+      return;
+    }
+    if (startDate > endDate) {
+      setError("start", {
+        type: "string",
+        message: "End time should be later than start time.",
+      });
+      setLoading(false);
+      return;
+    }
+
     const { data } = await axios.post(
       `/api/shops/${router.query.id}/reservation`,
       {
-        start,
-        end,
+        start: startDate,
+        end: endDate,
       }
     );
     console.log(data);
@@ -57,6 +82,9 @@ export default function Register() {
 
           <Button text="Reservate!" />
         </div>
+        <span className="max-w-xl w-full grid mx-auto mt-10 text-center text-lg text-red-500">
+          {errors.start?.message}
+        </span>
       </form>
     </>
   );

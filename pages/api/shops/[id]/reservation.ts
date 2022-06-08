@@ -11,8 +11,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const newReservation = await client.reservation.create({
     data: {
-      start: new Date(start),
-      end: new Date(end),
+      start,
+      end,
       reservationShop: {
         connect: {
           id: +id.toString(),

@@ -255,12 +255,39 @@ export default function ShopIdElement() {
         </div>
       </div>
 
-      <div className="mb-5 w-full flex justify-center">
-        <Link href={`/shops/${router.query.id}/reservation`}>
-          <a>
-            <Button text="Reservate Now!" />
-          </a>
-        </Link>
+      <div className="mb-10 mt-10 w-full flex justify-center">
+        {data && retdata ? (
+          data.shop.userId === retdata.userWithDetails.id ? (
+            <div>
+              <button
+                onClick={() => {
+                  onShopEditClicked();
+                }}
+                className="text-xs bg-blue-400 rounded-md p-2
+            text-white hover:bg-blue-600 transition-colors mr-5"
+              >
+                Shop Edit
+              </button>
+              <button
+                onClick={() => {
+                  onShopDeleteClicked();
+                }}
+                className="text-xs bg-red-400 rounded-md p-2
+            text-white hover:bg-red-600 transition-colors ml-5"
+              >
+                Shop Delete
+              </button>
+            </div>
+          ) : (
+            <Link href={`/shops/${router.query.id}/reservation`}>
+              <a>
+                <Button text="Reservate Now!" />
+              </a>
+            </Link>
+          )
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="pl-4 mb-8">
@@ -331,33 +358,6 @@ export default function ShopIdElement() {
             </form>
           </div>
         ))}
-      </div>
-
-      <div className="mb-20 w-full flex justify-center">
-        {data && retdata && data.shop.userId === retdata.userWithDetails.id ? (
-          <div>
-            <button
-              onClick={() => {
-                onShopEditClicked();
-              }}
-              className="text-xs bg-blue-400 rounded-md py-2
-            text-white hover:bg-blue-600 transition-colors mr-5 px-2"
-            >
-              Shop Edit
-            </button>
-            <button
-              onClick={() => {
-                onShopDeleteClicked();
-              }}
-              className="text-xs bg-red-400 rounded-md py-2
-            text-white hover:bg-red-600 transition-colors ml-5 px-2"
-            >
-              Shop Delete
-            </button>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </>
   );

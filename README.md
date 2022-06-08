@@ -4,15 +4,14 @@
 
 1. Log-out function
 2. Check that api with session always contains a user
-3. Edit shop information
-4. Fix a review delete bug
-5. Delete old reservations
-6. Make shop accepts only one person at the same time.
-7. Make user reserve only one shop at the same time.
-8. Check validity of reservation time
-9. Naver OAuth
-10. Planetscale Deployment
-11. Vercel Deployment
+3. Prevent self-reservation
+4. Delete old reservations
+5. Make shop accepts only one person at the same time.
+6. Make user reserve only one shop at the same time.
+7. Check validity of reservation time
+8. Naver OAuth
+9. Planetscale Deployment
+10. Vercel Deployment
 
 ## PATCH NOTE
 
@@ -43,3 +42,8 @@
 5. Add shop edit function
 6. Change review register api path
 7. Fix review delete function
+
+### 06-08
+
+1. Add image preview function
+2. Fix scroll and overlay issue

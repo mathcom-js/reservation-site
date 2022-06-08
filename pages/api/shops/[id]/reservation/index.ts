@@ -9,6 +9,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     body: { start, end },
   } = req;
 
+  await client.reservation.deleteMany({
+    where: {
+      end: {
+        lt: new Date(),
+      },
+    },
+  });
+
   const newReservation = await client.reservation.create({
     data: {
       start,

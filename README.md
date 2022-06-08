@@ -2,16 +2,14 @@
 
 ## To-Dos
 
-1. Log-out function
-2. Check that api with session always contains a user
-3. Prevent self-reservation
-4. Delete old reservations
-5. Make shop accepts only one person at the same time.
-6. Make user reserve only one shop at the same time.
-7. Check validity of reservation time
-8. Naver OAuth
-9. Planetscale Deployment
-10. Vercel Deployment
+1. Log-out function (Gon)
+2. Check that api with session always contains a user (Jun)
+3. Prevent self-reservation (Min)
+4. Make shop accepts only one person at the same time. (-)
+5. Make user reserve only one shop at the same time. (-)
+6. Naver OAuth (Gon)
+7. Planetscale Deployment
+8. Vercel Deployment
 
 ## PATCH NOTE
 
@@ -47,3 +45,5 @@
 
 1. Add image preview function
 2. Fix scroll and overlay issue
+3. Delete old reservations
+4. Add reservation time validity check

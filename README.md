@@ -4,10 +4,9 @@
 
 1. Log-out function (Gon)
 2. Check that api with session always contains a user (Jun)
-3. Make shop accepts only one person at the same time. (-)
-4. Naver OAuth (Gon)
-5. Planetscale Deployment
-6. Vercel Deployment
+3. Naver OAuth (Gon)
+4. Planetscale Deployment
+5. Vercel Deployment
 
 ## PATCH NOTE
 
@@ -48,3 +47,4 @@
 5. Change shop button position
 6. Prevent self-reservation
 7. Prevent duplicate reservation for same user
+8. Prevent duplicate reservation for same time

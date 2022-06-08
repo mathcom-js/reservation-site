@@ -27,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (shopUser?.userId !== user?.id) {
-    const existedReservation = await client.reservation.findMany({
+    const existedMyReservation = await client.reservation.findMany({
       where: {
         reservationUserId: +user?.id!,
         AND: [
@@ -43,7 +43,26 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
 
-    if (existedReservation.length === 0) {
+    const existedOtherReservation = await client.reservation.findMany({
+      where: {
+        reservationShopId: +id,
+        AND: [
+          {
+            end: {
+              gt: start,
+            },
+            start: {
+              lt: end,
+            },
+          },
+        ],
+      },
+    });
+
+    if (
+      existedMyReservation.length === 0 &&
+      existedOtherReservation.length === 0
+    ) {
       const newReservation = await client.reservation.create({
         data: {
           start,

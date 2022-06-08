@@ -186,7 +186,7 @@ export default function ShopIdElement() {
     <>
       <Header />
       <div className="relative">
-        <h1 className="text-center text-xl text-violet-400 mt-20">
+        <h1 className="text-center text-xl text-violet-400">
           {data?.shop.name}
         </h1>
         <button onClick={onHeartClicked} className="absolute right-4">

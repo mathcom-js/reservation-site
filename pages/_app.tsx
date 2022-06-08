@@ -22,7 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         fetcher: (url: string) => axios.get(url).then((res) => res.data),
       }}
     >
-      <Component {...pageProps} />
+      <div className="my-20">
+        <Component {...pageProps} />
+      </div>
       <Footer />
     </SWRConfig>
   );

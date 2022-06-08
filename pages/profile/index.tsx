@@ -27,7 +27,7 @@ export default function Profile() {
   return (
     <>
       <Header />
-      <div className="mt-20 flex items-center space-x-8 ml-8">
+      <div className="flex items-center space-x-8 ml-8">
         {data?.userWithDetails?.avatarId ? (
           <img
             src={createImageUrl(data?.userWithDetails.avatarId, "public")}

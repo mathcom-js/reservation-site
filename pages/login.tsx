@@ -118,7 +118,7 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-xl w-full flex flex-col mx-auto mt-20 space-y-8">
+    <div className="max-w-xl w-full flex flex-col mx-auto space-y-8">
       <h1 className="text-center text-lg text-violet-400">
         Make Your Reservation!
       </h1>

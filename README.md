@@ -2,11 +2,13 @@
 
 ## To-Dos
 
-1. Log-out function (Gon)
-2. Check that api with session always contains a user (Jun)
-3. Naver OAuth (Gon)
-4. Planetscale Deployment
-5. Vercel Deployment
+1. Check that api with session always contains a user (Jun)
+2. Naver OAuth (Gon)
+3. Planetscale Deployment
+4. Vercel Deployment
+5. Separate date and time input
+6. Check the reservation is in opening hours
+7. Cookie removal issues
 
 ## PATCH NOTE
 
@@ -48,3 +50,7 @@
 6. Prevent self-reservation
 7. Prevent duplicate reservation for same user
 8. Prevent duplicate reservation for same time
+
+### 06-09
+
+1. Add Log-out function

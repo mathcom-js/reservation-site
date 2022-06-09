@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "paths": { "@libs/*": ["libs/*"], "@components/*": ["components/*"] }
+    "paths": { "@libs/*": ["libs/*"], "@components/*": ["components/*"] },
+    "downlevelIteration": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

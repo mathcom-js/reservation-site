@@ -7,9 +7,10 @@
 3. Planetscale Deployment
 4. Vercel Deployment
 5. Cookie removal issues
-6. Shows reservation list for owner
-7. Make loading button
-8. CSS style complete
+6. Make loading button
+7. CSS style complete
+8. Shows reservation list for owner, and user
+9. Prevents duplicate reservation at a same time
 
 ## PATCH NOTE
 

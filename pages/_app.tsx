@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         fetcher: (url: string) => axios.get(url).then((res) => res.data),
       }}
     >
+      <title>Make Your Reservation!</title>
       <Component {...pageProps} />
       <Footer />
     </SWRConfig>

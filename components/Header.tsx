@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
   return (
     <div
       className="fixed top-0 bg-slate-800 w-full
-                     grid grid-cols-3 text-center py-2.5 text-sm"
+                     grid grid-cols-4 text-center py-2.5 text-sm"
     >
       <Link href="/">
         <a
@@ -33,6 +34,21 @@ export default function Header() {
           }
         >
           Profile
+        </a>
+      </Link>
+      <Link href="/">
+        <a
+          className={"text-white"}
+          onClick={async () => {
+            const value = confirm("로그아웃하시겠습니까?");
+            if (value) {
+              await axios.post("/api/logout", {});
+              alert("로그아웃되었습니다.");
+              router.push("/login");
+            }
+          }}
+        >
+          Logout
         </a>
       </Link>
     </div>

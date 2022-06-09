@@ -33,8 +33,9 @@ model Shop {
   userId       Int
   name         String
   location     String
-  startTime    String?
-  endTime      String?
+  startTime    Int
+  endTime      Int
+  period       Int
   description  String        @db.MediumText
   imageId      String?
   Reviews      Review[]
@@ -76,8 +77,8 @@ model Reservation {
   id                Int      @id @default(autoincrement())
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  start             DateTime
-  end               DateTime
+  time              Int
+  date              String
   reservationUser   User     @relation(fields: [reservationUserId], references: [id], onDelete: Cascade)
   reservationUserId Int
   reservationShop   Shop     @relation(fields: [reservationShopId], references: [id], onDelete: Cascade)

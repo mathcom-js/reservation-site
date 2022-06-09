@@ -1,13 +1,27 @@
 import Button from "@components/Button";
 import Header from "@components/Header";
+import { DateInput, SelectInput, TimePairInput } from "@components/Input";
+import { getAvailableTimes, timeToMinute } from "@libs/time";
+import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useSWR from "swr";
 
 interface ReservateForm {
-  start: string;
-  end: string;
+  time: string;
+  date: string;
+}
+
+interface ShopReturn {
+  ok: boolean;
+  shop: Shop;
+}
+
+interface DateReservationReturn {
+  ok: boolean;
+  unAvailables: { time: number }[];
 }
 
 export default function Register() {
@@ -16,14 +30,54 @@ export default function Register() {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors },
   } = useForm<ReservateForm>();
-  const [loading, setLoading] = useState(false);
 
-  const onValid = async ({ start, end }: ReservateForm) => {
+  const [loading, setLoading] = useState(false);
+  const [timeList, setTimeList] = useState<string[]>([]);
+  const [dateTimeList, setDateTimeList] = useState<string[]>([]);
+
+  const date = watch("date");
+
+  const { data: shopData } = useSWR<ShopReturn>(
+    router.query.id ? `/api/shops/${router.query.id}` : null
+  );
+  const { data: reservationData, mutate: reservationMutate } =
+    useSWR<DateReservationReturn>(date ? `/api/reservations/${date}` : null);
+
+  useEffect(() => {
+    if (shopData && shopData.ok) {
+      const startM = shopData.shop.startTime;
+      const endM = shopData.shop.endTime;
+      const period = shopData.shop.period;
+
+      setTimeList(getAvailableTimes(startM, endM, period));
+    }
+  }, [shopData]);
+
+  useEffect(() => {
+    reservationMutate().then((res) => {
+      if (res && res.unAvailables) {
+        setDateTimeList(
+          timeList.filter(
+            (time) =>
+              !res.unAvailables
+                .map((obj) => obj.time)
+                .includes(timeToMinute(time))
+          )
+        );
+      } else {
+        setDateTimeList(timeList);
+      }
+    });
+  }, [date]);
+
+  const onValid = async ({ time, date }: ReservateForm) => {
     if (loading) return;
     else setLoading(true);
 
+    /*
     const startDate = new Date(start);
     const endDate = new Date(end);
 
@@ -43,19 +97,23 @@ export default function Register() {
       setLoading(false);
       return;
     }
+     */
 
     const { data } = await axios.post(
       `/api/shops/${router.query.id}/reservation`,
       {
-        start: startDate,
-        end: endDate,
+        time: timeToMinute(time),
+        date,
       }
     );
 
     if (!data.ok) {
+      /*
       if (data.error === "time")
         alert("duplicate with another reservation time");
       if (data.error === "access") alert("access denied");
+       */
+      console.log(data.error);
       setLoading(false);
     } else {
       router.push(`/shops/${router.query.id}`);
@@ -71,27 +129,22 @@ export default function Register() {
         <div className="max-w-xl w-full flex flex-col mx-auto space-y-8">
           <h1 className="text-center text-lg text-violet-400">Reservate</h1>
 
-          <div className="flex flex-col space-y-2">
-            <span className="text-xs">The Time you want</span>
-            <div className="flex w-full justify-center">
-              <input
-                className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-                type="datetime-local"
-                {...register("start")}
-              />
-              <span className="mx-8">-</span>
-              <input
-                className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-                type="datetime-local"
-                {...register("end")}
-              />
-            </div>
-          </div>
+          <DateInput
+            name="New Site"
+            minDate={new Date()}
+            register={register("date", { required: true })}
+          />
+
+          <SelectInput
+            name="Available Time"
+            data={dateTimeList}
+            register={register("time", { required: true })}
+          />
 
           <Button text="Reservate!" />
         </div>
         <span className="max-w-xl w-full grid mx-auto mt-10 text-center text-lg text-red-500">
-          {errors.start?.message}
+          {errors.time?.message}
         </span>
       </form>
     </>

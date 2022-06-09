@@ -6,9 +6,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     session: { user },
     query: { id },
-    body: { start, end },
+    body: { time, date },
   } = req;
 
+  /*
   await client.reservation.deleteMany({
     where: {
       end: {
@@ -62,30 +63,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (
       existedMyReservation.length === 0 &&
       existedOtherReservation.length === 0
-    ) {
-      const newReservation = await client.reservation.create({
-        data: {
-          start,
-          end,
-          reservationShop: {
-            connect: {
-              id: +id.toString(),
-            },
-          },
-          reservationUser: {
-            connect: {
-              id: user?.id,
-            },
-          },
+    ) { */
+  const newReservation = await client.reservation.create({
+    data: {
+      time,
+      date,
+      reservationShop: {
+        connect: {
+          id: +id.toString(),
         },
-      });
-      res.json({ ok: true, newReservation });
-    } else {
+      },
+      reservationUser: {
+        connect: {
+          id: user?.id,
+        },
+      },
+    },
+  });
+  res.json({ ok: true, newReservation });
+  /* } else {
       res.json({ ok: false, error: "time" });
     }
   } else {
     res.json({ ok: false, error: "access" });
-  }
+  }*/
 }
 
 export default withSession(handler);

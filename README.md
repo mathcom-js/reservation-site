@@ -2,13 +2,14 @@
 
 ## To-Dos
 
-1. Check that api with session always contains a user (Jun)
-2. Naver OAuth (Gon)
+1. Check that api with session always contains a user
+2. Naver OAuth
 3. Planetscale Deployment
 4. Vercel Deployment
-5. Separate date and time input
-6. Check the reservation is in opening hours
-7. Cookie removal issues
+5. Cookie removal issues
+6. Shows reservation list for owner
+7. Make loading button
+8. CSS style complete
 
 ## PATCH NOTE
 
@@ -54,3 +55,7 @@
 ### 06-09
 
 1. Add Log-out function
+2. Change DB schema and make utilities for time
+3. Add period for each shop
+4. Seperate time and date while making a reservation
+5. Only available reservations are visible

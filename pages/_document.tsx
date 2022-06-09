@@ -5,7 +5,6 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>Make Your Reservation!</title>
           <meta charSet="utf-8"></meta>
           <body>
             <script

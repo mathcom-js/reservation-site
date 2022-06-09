@@ -1,3 +1,4 @@
+import { minuteToTime } from "@libs/time";
 import { Shop, Review } from "@prisma/client";
 import Link from "next/link";
 import { createImageUrl } from "../libs/utils";
@@ -43,7 +44,7 @@ const ShopThumbnail = ({
           <div className="grid grid-cols-[1fr_4fr] text-center">
             <span className="flex items-center justify-center text-sm">⏰</span>
             <span className="text-violet-800 flex items-center justify-center">
-              {startTime}-{endTime}
+              {minuteToTime(startTime)}-{minuteToTime(endTime)}
             </span>
           </div>
 

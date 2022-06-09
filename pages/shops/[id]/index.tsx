@@ -8,6 +8,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Button from "@components/Button";
 import { useForm } from "react-hook-form";
+import { minuteToTime, timeToMinute } from "@libs/time";
 
 interface ReviewWithUser extends User {
   id: number;
@@ -236,7 +237,8 @@ export default function ShopIdElement() {
         <div className="grid grid-cols-[1fr_4fr] text-center">
           <span className="flex items-center justify-center text-lg">⏰</span>
           <span className="text-violet-800 flex items-center justify-center">
-            {data?.shop.startTime}-{data?.shop.endTime}
+            {data && minuteToTime(data.shop.startTime)}-
+            {data && minuteToTime(data.shop.endTime)}
           </span>
         </div>
 

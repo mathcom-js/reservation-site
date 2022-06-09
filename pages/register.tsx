@@ -1,6 +1,12 @@
 import Button from "@components/Button";
 import Header from "@components/Header";
-import { ImageInput, Input, TimeInput } from "@components/Input";
+import {
+  ImageInput,
+  Input,
+  SelectInput,
+  TimePairInput,
+} from "@components/Input";
+import { getAvailableTimes, isPeriodical, timeToMinute } from "@libs/time";
 import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -11,6 +17,7 @@ interface RegisterForm {
   name: string;
   startTime: string;
   endTime: string;
+  period: number;
   description: string;
   location: string;
   shopimage: FileList;
@@ -26,7 +33,13 @@ interface RegisterReturn {
 
 export default function Register() {
   const router = useRouter();
-  const { register, handleSubmit, watch } = useForm<RegisterForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterForm>();
   const [previewUrl, setPreviewUrl] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
 
@@ -46,11 +59,40 @@ export default function Register() {
     description,
     location,
     shopimage,
+    period,
   }: RegisterForm) => {
     if (loading) return;
     else setLoading(true);
 
-    const box = { name, startTime, endTime, description, location };
+    const startM = timeToMinute(startTime);
+    const endM = timeToMinute(endTime);
+
+    if (endM - startM <= 0) {
+      setError("startTime", {
+        type: "string",
+        message: "Ends so quickly",
+      });
+      setLoading(false);
+      return;
+    }
+
+    if ((endM - startM) % period !== 0) {
+      setError("startTime", {
+        type: "string",
+        message: "Time period is not matching",
+      });
+      setLoading(false);
+      return;
+    }
+
+    const box = {
+      name,
+      startTime: startM,
+      endTime: endM,
+      period: +period,
+      description,
+      location,
+    };
     let block;
     if (shopimage && shopimage.length > 0) {
       const {
@@ -90,22 +132,23 @@ export default function Register() {
             register={register("name", { required: true })}
             name="Your Shop Name"
           />
-          <div className="flex flex-col space-y-2">
-            <span className="text-xs">Your Time</span>
-            <div className="flex w-full justify-center">
-              <input
-                className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-                type="time"
-                {...register("startTime")}
-              />
-              <span className="mx-8">-</span>
-              <input
-                className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
-                type="time"
-                {...register("endTime")}
-              />
-            </div>
-          </div>
+          <TimePairInput
+            name="Your Time"
+            startRegister={register("startTime", {
+              validate: {
+                halfOrClock: (value) =>
+                  isPeriodical(value, 30) || "Starts at half or clock",
+              },
+            })}
+            endRegister={register("endTime")}
+          />
+
+          <SelectInput
+            name="Time period"
+            register={register("period")}
+            data={[15, 30, 60, 120, 240]}
+          />
+
           <Input
             register={register("description", { required: true })}
             name="Your Description"
@@ -123,6 +166,9 @@ export default function Register() {
           <Button text="Register" />
         </div>
       </form>
+      <span className="max-w-xl w-full grid mx-auto mt-10 text-center text-lg text-red-500">
+        {errors.startTime?.message}
+      </span>
     </>
   );
 }

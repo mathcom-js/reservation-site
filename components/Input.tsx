@@ -6,6 +6,24 @@ interface InputProps {
   register?: UseFormRegisterReturn;
 }
 
+interface SelectInputProps {
+  name: string;
+  data: (string | number)[];
+  register: UseFormRegisterReturn;
+}
+
+interface DateInputProps {
+  name: string;
+  register?: UseFormRegisterReturn;
+  minDate?: Date;
+}
+
+interface TimePairInputProps {
+  name: string;
+  startRegister?: UseFormRegisterReturn;
+  endRegister?: UseFormRegisterReturn;
+}
+
 interface ImageInputProps {
   name: string;
   register?: UseFormRegisterReturn;
@@ -26,7 +44,44 @@ export function Input({ name, isPassword, register }: InputProps) {
   );
 }
 
-export function TimeInput({ name, register }: InputProps) {
+export function SelectInput({ name, data, register }: SelectInputProps) {
+  return (
+    <div className="flex flex-col space-y-2">
+      <span className="text-xs">{name}</span>
+
+      <select
+        {...register}
+        className="py-1 focus:outline-none border-2 border-gray-200 rounded-md"
+      >
+        {data?.map((value) => (
+          <option key={value}>{value}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+export function DateInput({ name, minDate, register }: DateInputProps) {
+  const isoMinDate = minDate?.toISOString().split("T")[0];
+  return (
+    <div className="flex flex-col space-y-2">
+      <span className="text-xs">{name}</span>
+
+      <input
+        className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
+        type="date"
+        min={isoMinDate}
+        {...register}
+      />
+    </div>
+  );
+}
+
+export function TimePairInput({
+  name,
+  startRegister,
+  endRegister,
+}: TimePairInputProps) {
   return (
     <div className="flex flex-col space-y-2">
       <span className="text-xs">{name}</span>
@@ -34,12 +89,13 @@ export function TimeInput({ name, register }: InputProps) {
         <input
           className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
           type="time"
+          {...startRegister}
         />
         <span className="mx-8">-</span>
         <input
           className="w-full focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5"
           type="time"
-          {...register}
+          {...endRegister}
         />
       </div>
     </div>

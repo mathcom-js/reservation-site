@@ -10,8 +10,7 @@
 6. Make loading button
 7. CSS style complete
 8. Shows reservation list for owner, and user
-9. Prevents duplicate reservation at a same time
-10. Make a Naver logout function
+9. Make a Naver logout function
 
 ## PATCH NOTE
 
@@ -65,3 +64,4 @@
 ### 06-10
 
 1. Add Naver OAuth login function
+2. Prevent duplicate reservation for same user with new version

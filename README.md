@@ -3,7 +3,7 @@
 ## To-Dos
 
 1. Check that api with session always contains a user
-2. Naver OAuth
+2. Style Naver button
 3. Planetscale Deployment
 4. Vercel Deployment
 5. Cookie removal issues
@@ -11,6 +11,7 @@
 7. CSS style complete
 8. Shows reservation list for owner, and user
 9. Prevents duplicate reservation at a same time
+10. Make a Naver logout function
 
 ## PATCH NOTE
 
@@ -60,3 +61,7 @@
 3. Add period for each shop
 4. Seperate time and date while making a reservation
 5. Only available reservations are visible
+
+### 06-10
+
+1. Add Naver OAuth login function

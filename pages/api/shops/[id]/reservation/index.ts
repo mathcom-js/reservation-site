@@ -9,11 +9,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     body: { time, date },
   } = req;
 
-  /*
+  const now = new Date().toISOString().split("T")[0];
+
   await client.reservation.deleteMany({
     where: {
-      end: {
-        lt: new Date(),
+      date: {
+        lt: now,
       },
     },
   });
@@ -31,62 +32,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const existedMyReservation = await client.reservation.findMany({
       where: {
         reservationUserId: +user?.id!,
-        AND: [
-          {
-            end: {
-              gt: start,
-            },
-            start: {
-              lt: end,
-            },
-          },
-        ],
+        date,
+        time,
       },
     });
 
-    const existedOtherReservation = await client.reservation.findMany({
-      where: {
-        reservationShopId: +id,
-        AND: [
-          {
-            end: {
-              gt: start,
-            },
-            start: {
-              lt: end,
+    if (existedMyReservation.length === 0) {
+      const newReservation = await client.reservation.create({
+        data: {
+          time,
+          date,
+          reservationShop: {
+            connect: {
+              id: +id.toString(),
             },
           },
-        ],
-      },
-    });
-
-    if (
-      existedMyReservation.length === 0 &&
-      existedOtherReservation.length === 0
-    ) { */
-  const newReservation = await client.reservation.create({
-    data: {
-      time,
-      date,
-      reservationShop: {
-        connect: {
-          id: +id.toString(),
+          reservationUser: {
+            connect: {
+              id: user?.id,
+            },
+          },
         },
-      },
-      reservationUser: {
-        connect: {
-          id: user?.id,
-        },
-      },
-    },
-  });
-  res.json({ ok: true, newReservation });
-  /* } else {
-      res.json({ ok: false, error: "time" });
+      });
+      res.json({ ok: true, newReservation });
     }
+    res.json({ ok: false, error: "duplicate with another reservation time" });
   } else {
-    res.json({ ok: false, error: "access" });
-  }*/
+    res.json({ ok: false, error: "access denied" });
+  }
 }
 
 export default withSession(handler);

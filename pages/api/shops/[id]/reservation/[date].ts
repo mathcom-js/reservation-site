@@ -6,11 +6,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const {
-    query: { date },
+    query: { date, id },
   } = req;
 
   const unAvailables = await client.reservation.findMany({
     where: {
+      reservationShopId: +id.toString(),
       date: date.toString(),
     },
     select: {

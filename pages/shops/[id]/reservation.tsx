@@ -44,7 +44,11 @@ export default function Register() {
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
   const { data: reservationData, mutate: reservationMutate } =
-    useSWR<DateReservationReturn>(date ? `/api/reservations/${date}` : null);
+    useSWR<DateReservationReturn>(
+      date && router.query.id
+        ? `/api/shops/${router.query.id}/reservation/${date}`
+        : null
+    );
 
   useEffect(() => {
     if (shopData && shopData.ok) {
@@ -77,28 +81,6 @@ export default function Register() {
     if (loading) return;
     else setLoading(true);
 
-    /*
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    if (startDate < new Date()) {
-      setError("start", {
-        type: "string",
-        message: "Start time should be later than now.",
-      });
-      setLoading(false);
-      return;
-    }
-    if (startDate > endDate) {
-      setError("start", {
-        type: "string",
-        message: "End time should be later than start time.",
-      });
-      setLoading(false);
-      return;
-    }
-     */
-
     const { data } = await axios.post(
       `/api/shops/${router.query.id}/reservation`,
       {
@@ -108,12 +90,7 @@ export default function Register() {
     );
 
     if (!data.ok) {
-      /*
-      if (data.error === "time")
-        alert("duplicate with another reservation time");
-      if (data.error === "access") alert("access denied");
-       */
-      console.log(data.error);
+      alert(data.error);
       setLoading(false);
     } else {
       router.push(`/shops/${router.query.id}`);

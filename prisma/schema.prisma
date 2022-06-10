@@ -19,6 +19,7 @@ model User {
   username     String
   avatarId     String?
   kakaoId      String?       @unique
+  naverId      String?       @unique
   shops        Shop[]
   reviews      Review[]
   hearts       Heart[]

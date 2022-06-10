@@ -8,12 +8,13 @@ import { useEffect } from "react";
 declare global {
   interface Window {
     Kakao: any;
+    naver: any;
   }
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    window.Kakao.init("2aec4359bd683f2e8d0f3d400a605adc");
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
   }, []);
 
   return (

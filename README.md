@@ -2,15 +2,14 @@
 
 ## To-Dos
 
-1. Check that api with session always contains a user
-2. Style Naver button
-3. Planetscale Deployment
-4. Vercel Deployment
-5. Cookie removal issues
-6. Make loading button
-7. CSS style complete
-8. Shows reservation list for owner, and user
-9. Make a Naver logout function
+1. Style Naver button
+2. Planetscale Deployment
+3. Vercel Deployment
+4. Cookie removal issues
+5. Make loading button
+6. CSS style complete
+7. Shows reservation list for owner, and user
+8. Make a Naver logout function
 
 ## PATCH NOTE
 
@@ -65,3 +64,8 @@
 
 1. Add Naver OAuth login function
 2. Prevent duplicate reservation for same user with new version
+
+### 06-11
+
+1. API checks method of request
+2. API checks user when using session

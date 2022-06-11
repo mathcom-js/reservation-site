@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/client";
 import { withSession } from "@libs/withSession";
 import { isNullObj } from "@libs/utils";
+import { withHandler } from "@libs/withHandler";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -58,4 +59,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSession(handler);
+export default withSession(
+  withHandler({ method: ["GET", "PUT"], fn: handler })
+);

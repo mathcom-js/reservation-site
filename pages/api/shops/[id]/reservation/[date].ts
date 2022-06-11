@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/client";
+import { withHandler } from "@libs/withHandler";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { date, id },
   } = req;
@@ -20,3 +18,5 @@ export default async function handler(
   });
   res.json({ ok: true, unAvailables });
 }
+
+export default withHandler({ method: ["GET"], fn: handler, isSession: false });

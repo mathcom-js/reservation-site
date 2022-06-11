@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/client";
 import { withSession } from "@libs/withSession";
+import { withHandler } from "@libs/withHandler";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -62,4 +63,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSession(handler);
+export default withSession(withHandler({ method: ["POST"], fn: handler }));

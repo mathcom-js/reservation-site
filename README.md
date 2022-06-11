@@ -2,14 +2,13 @@
 
 ## To-Dos
 
-1. Style Naver button
-2. Planetscale Deployment
-3. Vercel Deployment
-4. Cookie removal issues
-5. Make loading button
-6. CSS style complete
-7. Shows reservation list for owner, and user
-8. Make a Naver logout function
+1. Planetscale Deployment
+2. Vercel Deployment
+3. Cookie removal issues
+4. Make loading button
+5. CSS style complete
+6. Shows reservation list for owner, and user
+7. Make a Naver logout function
 
 ## PATCH NOTE
 
@@ -69,3 +68,4 @@
 
 1. API checks method of request
 2. API checks user when using session
+3. Style Naver and Kakao button

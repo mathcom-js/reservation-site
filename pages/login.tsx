@@ -1,8 +1,11 @@
 import { User } from "@prisma/client";
 import axios from "axios";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import NaverImg from "../public/NaverImg.png";
+import KakaoImg from "../public/KakaoImg.png";
 
 interface LoginForm {
   name: string;
@@ -27,6 +30,7 @@ export default function Login() {
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginForm>();
   const [loading, setLoading] = useState(false);
+  const naverRef = useRef();
 
   const login_with_Kakao = () => {
     if (loading) return;
@@ -103,6 +107,10 @@ export default function Login() {
       loginButton: { color: "green", type: 1, height: 1 },
     });
     naverLogin.init();
+  };
+
+  const handleNaverLogin = () => {
+    naverRef.current.children[0].click();
   };
 
   const setSignUp = () => {
@@ -187,36 +195,24 @@ export default function Login() {
         </div>
       </div> */}
       <div className="grid grid-cols-2">
+        <div className="hidden" id="naverIdLogin" ref={naverRef} />
         <button
-          id="naverIdLogin"
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
 hover:bg-slate-50 transition-colors rounded-md"
-        ></button>
+          onClick={handleNaverLogin}
+        >
+          <div className="w-8 h-8">
+            <Image src={NaverImg} />
+          </div>
+        </button>
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
            hover:bg-slate-50 transition-colors rounded-md"
           onClick={login_with_Kakao}
         >
-          <svg
-            className="w-8 h-8"
-            id="kakao"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="-75 -90 350 350"
-          >
-            <polygon
-              className="kakao logo"
-              fill="#3c1e1e"
-              points="45 140 40 185 90 150 45 140"
-            />
-            <ellipse
-              className="kakao logo"
-              fill="#3c1e1e"
-              cx="100"
-              cy="80"
-              rx="100"
-              ry="80"
-            />
-          </svg>
+          <div className="w-8 h-8">
+            <Image src={KakaoImg} />
+          </div>
         </button>
       </div>
     </div>

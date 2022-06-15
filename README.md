@@ -8,7 +8,7 @@
 2. Vercel Deployment
 3. CSS style complete
 
---- MIN --- 4. Shows reservation list for owner, and user 5. Make loading button
+--- MIN --- 4. Shows reservation list for owner, and user
 
 --- GON --- 6. Cookie removal issues ( ... ) 7. Make a Naver logout function 8. Limit the length of a rating
 
@@ -71,3 +71,5 @@
 1. API checks method of request
 2. API checks user when using session
 3. Style Naver and Kakao button
+4. Make loading button
+5. Add reservation list fetch function

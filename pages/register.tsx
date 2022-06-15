@@ -6,7 +6,7 @@ import {
   SelectInput,
   TimePairInput,
 } from "@components/Input";
-import { getAvailableTimes, isPeriodical, timeToMinute } from "@libs/time";
+import { isPeriodical, timeToMinute } from "@libs/time";
 import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -112,7 +112,7 @@ export default function Register() {
     const { data }: RegisterReturn = await axios.post("/api/shops", block);
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       router.push("/");

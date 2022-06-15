@@ -1,38 +1,16 @@
-import { User } from "@prisma/client";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
-import { useForm } from "react-hook-form";
 import NaverImg from "../public/NaverImg.png";
 import KakaoImg from "../public/KakaoImg.png";
 
-interface LoginForm {
-  name: string;
-}
-
-interface LoginReturn {
-  data: {
-    ok: boolean;
-    foundUser?: User;
-  };
-}
-
-interface SignReturn {
-  data: {
-    ok: boolean;
-    newUser?: User;
-  };
-}
-
 export default function Login() {
-  const [method, setMethod] = useState<"LogIn" | "SignUp">("LogIn");
   const router = useRouter();
-  const { register, handleSubmit } = useForm<LoginForm>();
   const [loading, setLoading] = useState(false);
   const naverRef = useRef();
 
-  const login_with_Kakao = () => {
+  const kakaoLogin = () => {
     if (loading) return;
     else setLoading(true);
 
@@ -43,15 +21,6 @@ export default function Login() {
         }
         window.Kakao.Auth.login({
           success: function (response: any) {
-            const data = JSON.stringify(response);
-            console.log(data);
-            // axios
-            //   .post("/api/tokens", data, {
-            //     headers: { "Content-Type": "application/json" },
-            //   })
-            //   .then((res) => console.log(res));
-            const { access_token } = response;
-            console.log(access_token);
             window.Kakao.API.request({
               url: "/v2/user/me",
               success: function (response: any) {
@@ -66,13 +35,6 @@ export default function Login() {
                   })
                   .then((res) => res.data.ok && router.push("/"))
                   .finally(() => setLoading(false));
-
-                // const user = response.kakao_account;
-                // console.log(user);
-                // user.host = "kakao";
-                // const user_info = document.querySelector("#userinfo");
-                // if (user_info) user_info.value = JSON.stringify(user);
-                // console.log(user_info);
               },
               fail: function (error: any) {
                 console.log(error);
@@ -96,10 +58,10 @@ export default function Login() {
   }, [router]);
 
   useEffect(() => {
-    naverlogin();
+    naverLoginInit();
   }, []);
 
-  const naverlogin = async () => {
+  const naverLoginInit = async () => {
     const naverLogin = new window.naver.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID!,
       callbackUrl: "http://localhost:3000/login",
@@ -109,40 +71,8 @@ export default function Login() {
     naverLogin.init();
   };
 
-  const handleNaverLogin = () => {
+  const naverLogin = () => {
     naverRef.current.children[0].click();
-  };
-
-  const setSignUp = () => {
-    setMethod("SignUp");
-  };
-  const setLogIn = () => {
-    setMethod("LogIn");
-  };
-
-  const onValid = async ({ name }: LoginForm) => {
-    if (method === "LogIn") {
-      const { data }: LoginReturn = await axios.get(`/api/users?name=${name}`);
-      if (!data.ok) {
-        alert("No user!");
-      } else {
-        router.push("/");
-      }
-    } else {
-      const { data }: SignReturn = await axios.post(
-        "/api/user",
-        { name },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (!data.ok) {
-        alert("Duplicate name!");
-      } else {
-        router.push("/");
-      }
-    }
   };
 
   return (
@@ -151,55 +81,12 @@ export default function Login() {
         Make Your Reservation!
       </h1>
 
-      {/* <div className="grid grid-cols-2">
-        <button
-          className={cls(
-            method === "LogIn"
-              ? "text-violet-400 border-violet-400"
-              : "text-gray-400",
-            "border-b pb-2"
-          )}
-          onClick={setLogIn}
-        >
-          Log In
-        </button>
-        <button
-          className={cls(
-            method === "SignUp"
-              ? "text-violet-400 border-violet-400"
-              : "text-gray-400",
-            "border-b pb-2"
-          )}
-          onClick={setSignUp}
-        >
-          Sign Up
-        </button>
-      </div>
-
-      <form
-        onSubmit={handleSubmit(onValid)}
-        className="flex flex-col space-y-8"
-      >
-        <Input register={register("name", { required: true })} name="Name" />
-        {method === "LogIn" ? (
-          <Button text="Log In" />
-        ) : (
-          <Button text="Sign Up" />
-        )}
-      </form>
-
-      <div>
-        <div className="border-t border-gray-200 w-full relative top-3.5 -z-10" />
-        <div className="text-center">
-          <span className="text-xs text-gray-500 bg-white px-3">Or use</span>
-        </div>
-      </div> */}
       <div className="grid grid-cols-2">
         <div className="hidden" id="naverIdLogin" ref={naverRef} />
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
-hover:bg-slate-50 transition-colors rounded-md"
-          onClick={handleNaverLogin}
+                  hover:bg-slate-50 transition-colors rounded-md"
+          onClick={naverLogin}
         >
           <div className="w-8 h-8">
             <Image src={NaverImg} />
@@ -208,7 +95,7 @@ hover:bg-slate-50 transition-colors rounded-md"
         <button
           className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
            hover:bg-slate-50 transition-colors rounded-md"
-          onClick={login_with_Kakao}
+          onClick={kakaoLogin}
         >
           <div className="w-8 h-8">
             <Image src={KakaoImg} />

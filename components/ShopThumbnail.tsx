@@ -28,35 +28,35 @@ const ShopThumbnail = ({
   const avg = (Reviews.length !== 0 ? total / Reviews.length : 0).toFixed(1);
   return (
     <div className="w-full border shadow-lg rounded-xl" key={id}>
-      <div className="grid grid-cols-[3fr_2fr]">
+      <div className="grid grid-cols-2">
         <Link href={`/shops/${id}`}>
           <a className="flex items-center justify-center py-4">
             {imageId ? (
-              <img src={createImageUrl(imageId, "regular")} className="w-48" />
+              <img src={createImageUrl(imageId, "regular")} className="w-64" />
             ) : (
-              <div className="w-48 h-48 bg-slate-200" />
+              <div className="w-64 h-64 bg-slate-200" />
             )}
           </a>
         </Link>
         <div className="flex flex-col justify-between py-4 text-center">
-          <span className="text-violet-400 ">{name}</span>
+          <span className="text-violet-400 text-xl font-bold">{name}</span>
 
           <div className="grid grid-cols-[1fr_4fr] text-center">
-            <span className="flex items-center justify-center text-sm">⏰</span>
+            <span className="flex items-center justify-center">⏰</span>
             <span className="text-violet-800 flex items-center justify-center">
               {minuteToTime(startTime)}-{minuteToTime(endTime)}
             </span>
           </div>
 
           <div className="grid grid-cols-[1fr_4fr] text-center">
-            <span className="flex items-center justify-center text-sm">🏠</span>
+            <span className="flex items-center justify-center">🏠</span>
             <span className="text-violet-800 flex items-center justify-center">
               {location}
             </span>
           </div>
 
           <div className="grid grid-cols-[1fr_4fr] text-center">
-            <span className="flex items-center justify-center text-sm">🧾</span>
+            <span className="flex items-center justify-center ">🧾</span>
             <span className="text-violet-800 flex items-center justify-center text-xs">
               {description}
             </span>

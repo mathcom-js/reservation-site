@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Header from "@components/Header";
 import { cls, createImageUrl } from "@libs/utils";
-import { Heart, Review, Shop, User, Reservation } from "@prisma/client";
-import { useRouter } from "next/router";
+import { Review, Shop, User } from "@prisma/client";
 import useSWR from "swr";
 
 interface MyReservations extends Shop {
@@ -29,9 +28,7 @@ interface ReturnInfo {
 }
 
 export default function Profile() {
-  const router = useRouter();
   const { data } = useSWR<ReturnInfo>(`/api/users/me`);
-  console.log(data);
 
   return (
     <>
@@ -98,7 +95,7 @@ export default function Profile() {
           <div key={reservations.id} className="my-2">
             <Link href={`/shops/${reservations.reservationShopId}`}>
               <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
-                {reservations.reservationShop.name} {reservations.date}{" "}
+                {reservations.reservationShop.name} {reservations.date}
                 {reservations.time}
               </a>
             </Link>

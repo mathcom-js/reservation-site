@@ -156,7 +156,7 @@ export default function ShopIdElement() {
     mutate();
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       setValue("review", "");
@@ -174,7 +174,7 @@ export default function ShopIdElement() {
     mutate();
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       setLoading(false);
@@ -200,7 +200,7 @@ export default function ShopIdElement() {
         );
 
         if (!data.ok) {
-          console.log(JSON.stringify(data.error));
+          console.log(data.error);
         } else {
           router.push("/");
         }
@@ -262,8 +262,8 @@ export default function ShopIdElement() {
           <div className="w-96 h-96 bg-slate-200" />
         )}
       </div>
-      <div className="flex flex-col space-y-4 mb-8">
-        <div className="grid grid-cols-[1fr_4fr] text-center">
+      <div className="flex flex-col space-y-4 mb-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 text-center">
           <span className="flex items-center justify-center text-lg">⏰</span>
           <span className="text-violet-800 flex items-center justify-center">
             {data && minuteToTime(data.shop.startTime)}-
@@ -271,14 +271,14 @@ export default function ShopIdElement() {
           </span>
         </div>
 
-        <div className="grid grid-cols-[1fr_4fr] text-center">
+        <div className="grid grid-cols-2 text-center">
           <span className="flex items-center justify-center text-lg">🏠</span>
           <span className="text-violet-800 flex items-center justify-center">
             {data?.shop.location}
           </span>
         </div>
 
-        <div className="grid grid-cols-[1fr_4fr] text-center">
+        <div className="grid grid-cols-2 text-center">
           <span className="flex items-center justify-center text-lg">🧾</span>
           <span className="text-violet-800 flex items-center justify-center">
             {data?.shop.description}

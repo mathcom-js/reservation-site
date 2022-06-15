@@ -6,7 +6,6 @@ import { withHandler } from "@libs/withHandler";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     const {
-      session: { user },
       query: { id },
     } = req;
 
@@ -14,6 +13,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const reservations = await client.reservation.findMany({
         where: {
           reservationShopId: +id,
+        },
+        select: {
+          id: true,
+          time: true,
+          date: true,
+          reservationUser: true,
+          reservationUserId: true,
         },
       });
       res.json({ ok: true, reservations });

@@ -9,6 +9,7 @@ import Link from "next/link";
 import Button from "@components/Button";
 import { useForm } from "react-hook-form";
 import { minuteToTime, timeToMinute } from "@libs/time";
+import internal from "stream";
 
 interface ReviewWithUser extends User {
   id: number;
@@ -86,6 +87,19 @@ interface ReturnInfo {
   userWithDetails: UserProfileInfo;
 }
 
+interface reservationReturn extends Reservation {
+  ok: boolean;
+  reservations: reservationInfo[];
+}
+
+interface reservationInfo extends User {
+  id: number;
+  time: number;
+  date: string;
+  reservationUser: User;
+  reservationUserId: number;
+}
+
 export default function ShopIdElement() {
   const router = useRouter();
 
@@ -99,6 +113,11 @@ export default function ShopIdElement() {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(5);
   const [reviewId, setReviewId] = useState<number | undefined>();
+
+  const { data: resdata } = useSWR<reservationReturn>(
+    `/api/shops/${router.query.id}/reservation`
+  );
+  console.log(resdata);
 
   const onHeartClicked = async () => {
     if (!data || !router.query.id || loading) return;
@@ -350,11 +369,15 @@ export default function ShopIdElement() {
         </div>
       ))}
 
-      <div className="w-full py-2 my-4 font-semibold text-center">
-        Add your review
-      </div>
-
-      <form onSubmit={handleSubmit(onValid)}>
+      <form
+        onSubmit={handleSubmit(onValid)}
+        className={
+          data?.shop.userId === retdata?.userWithDetails.id ? "hidden" : ""
+        }
+      >
+        <div className="w-full py-2 my-4 font-semibold text-center">
+          Add your review
+        </div>
         <div className="py-2 grid grid-cols-[1fr_1fr_3fr_1fr] items-center mb-2 text-center">
           <span>{retdata?.userWithDetails.username}</span>
 
@@ -387,6 +410,38 @@ export default function ShopIdElement() {
           </div>
         </div>
       </form>
+
+      <br />
+      <br />
+      <br />
+
+      <div
+        className={
+          data?.shop.userId === retdata?.userWithDetails.id ? "" : "hidden"
+        }
+      >
+        <span className="py-2 grid items-center mb-2 text-center font-bold">
+          Reservation List
+        </span>
+        <div className="py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center font-bold">
+          <span>Name</span>
+          <span>Date</span>
+          <span>Time</span>
+        </div>
+
+        {resdata?.reservations?.map((res) => (
+          <div
+            key={res.id}
+            className="py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center"
+          >
+            <span>{res.reservationUser.username}</span>
+            <span>{res.date}</span>
+            <span>
+              {Math.floor(res.time / 60)}시 {res.time % 60}분
+            </span>
+          </div>
+        ))}
+      </div>
     </>
   );
 }

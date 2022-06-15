@@ -207,7 +207,7 @@ export default function Register() {
             previewUrl={previewUrl}
           />
 
-          <Button text="Register" />
+          <Button text={!loading ? "Submit" : "Loading"} />
         </div>
       </form>
       <span className="max-w-xl w-full grid mx-auto mt-10 text-center text-lg text-red-500">

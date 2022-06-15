@@ -118,7 +118,7 @@ export default function Register() {
             register={register("time", { required: true })}
           />
 
-          <Button text="Reservate!" />
+          <Button text={!loading ? "Reservate!" : "Loading"} />
         </div>
         <span className="max-w-xl w-full grid mx-auto mt-10 text-center text-lg text-red-500">
           {errors.time?.message}

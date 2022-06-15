@@ -27,6 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       id: foundUser.id,
       username: foundUser.username,
       avatarId: foundUser.avatarId ? foundUser.avatarId : undefined,
+      logintype: "Naver",
     };
     await req.session.save();
     res.json({ ok: true });
@@ -42,6 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         id: newUser.id,
         username: newUser.username,
         avatarId: newUser.avatarId ? newUser.avatarId : undefined,
+        logintype: "Naver",
       };
       await req.session.save();
       res.json({ ok: true });

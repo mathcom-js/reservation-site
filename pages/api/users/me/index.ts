@@ -49,6 +49,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         id: user?.id!,
         username: updatedUser.username,
         avatarId: updatedUser.avatarId ? updatedUser.avatarId : undefined,
+        logintype: user?.logintype!,
       };
       await req.session.save();
 

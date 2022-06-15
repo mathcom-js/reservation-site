@@ -7,6 +7,7 @@ declare module "iron-session" {
       id: number;
       username: string;
       avatarId?: string;
+      logintype: "Kakao" | "Naver";
     };
   }
 }

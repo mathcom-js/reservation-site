@@ -1,13 +1,5 @@
 # Reservation-site
 
-## To-Dos
-
---- JUN ---
-
-1. Planetscale Deployment
-2. Vercel Deployment
-3. CSS style complete
-
 ## PATCH NOTE
 
 ### 06-02
@@ -73,4 +65,6 @@
 
 1. Complete a logout function
 2. Add reservation list fetch function
-3. Shows reservation list for owner, and user
+3. Shows reservation list for owner and user
+4. Css style complete
+5. Deploy DB and project

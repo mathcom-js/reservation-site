@@ -32,21 +32,9 @@ interface EditedReturn {
   };
 }
 
-interface ReviewWithUser extends User {
-  id: number;
-  review: string;
-  score: number;
-  createdUserId: number;
-  createdUser: User;
-}
-
 interface ShopWithDetails extends Shop {
   user: {
     username: string;
-  };
-  Reviews: ReviewWithUser[];
-  _count: {
-    hearts: number;
   };
 }
 

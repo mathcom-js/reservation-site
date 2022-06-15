@@ -14,7 +14,6 @@ interface ReviewWithUser extends User {
   id: number;
   review: string;
   score: number;
-  createdUserId: number;
   createdUser: User;
 }
 
@@ -63,34 +62,7 @@ interface ShopDeleteReturn {
   };
 }
 
-interface MyReservations extends Shop {
-  reservationShop: Shop;
-  reservationShopId: Number;
-  date: String;
-  time: String;
-}
-
-interface myReview extends User, Shop {
-  id: number;
-  createdAt: Date;
-  review: string;
-  createdUserId: number;
-  createdUser: User;
-  commentedShopId: number;
-  commentedShop: Shop;
-  score: number;
-}
-
-interface UserProfileInfo extends User {
-  shops: Shop[];
-  reviews: myReview[];
-  hearts: {
-    select: {
-      likedShopId: true;
-    };
-  };
-  reservations: MyReservations[];
-}
+interface UserProfileInfo extends User {}
 
 interface ReturnInfo {
   ok: boolean;
@@ -107,7 +79,6 @@ interface reservationInfo extends User {
   time: number;
   date: string;
   reservationUser: User;
-  reservationUserId: number;
 }
 
 export default function ShopIdElement() {
@@ -361,7 +332,7 @@ export default function ShopIdElement() {
 
           <span>{review.review}</span>
           <form onSubmit={handleSubmit(onReviewDeleteClicked)}>
-            {retdata && review.createdUserId === retdata.userWithDetails.id ? (
+            {retdata && review.createdUser.id === retdata.userWithDetails.id ? (
               <button
                 onClick={() => {
                   setReviewId(review.id);

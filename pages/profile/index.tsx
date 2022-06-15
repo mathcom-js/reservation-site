@@ -6,7 +6,6 @@ import useSWR from "swr";
 
 interface MyReservations extends Shop {
   reservationShop: Shop;
-  reservationShopId: number;
   date: string;
   time: number;
 }
@@ -15,9 +14,7 @@ interface myReview extends User, Shop {
   id: number;
   createdAt: Date;
   review: string;
-  createdUserId: number;
   createdUser: User;
-  commentedShopId: number;
   commentedShop: Shop;
   score: number;
 }
@@ -80,7 +77,7 @@ export default function Profile() {
         <span className="text-lg font-semibold">Your Reviews</span>
         {data?.userWithDetails?.reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
-            <Link href={`/shops/${review.commentedShopId}`}>
+            <Link href={`/shops/${review.commentedShop.id}`}>
               <a className="mr-8">{review?.commentedShop?.name}</a>
             </Link>
 
@@ -105,7 +102,7 @@ export default function Profile() {
       </div>
 
       <div className="mt-8">
-        <span className="ml-8 text-lg font-semibold">Your Reservation</span>
+        <span className="ml-8 text-lg font-semibold">Your Reservations</span>
         <div className="mt-8 py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center font-bold">
           <span>Shop Name</span>
           <span>Date</span>
@@ -117,7 +114,7 @@ export default function Profile() {
             key={res.id}
             className="py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center"
           >
-            <Link href={`/shops/${res.reservationShopId}`}>
+            <Link href={`/shops/${res.reservationShop.id}`}>
               <a>{res.reservationShop.name}</a>
             </Link>
             <span>{res.date}</span>

@@ -19,10 +19,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             id: true,
             createdAt: true,
             review: true,
-            createdUserId: true,
-            createdUser: { select: { username: true } },
-            commentedShopId: true,
-            commentedShop: { select: { name: true } },
+            createdUser: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+            commentedShop: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
             score: true,
           },
         },
@@ -35,8 +43,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         reservations: {
           select: {
             id: true,
-            reservationShop: { select: { name: true } },
-            reservationShopId: true,
+            reservationShop: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
             date: true,
             time: true,
           },

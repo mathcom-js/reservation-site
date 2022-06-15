@@ -18,8 +18,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: true,
           time: true,
           date: true,
-          reservationUser: true,
-          reservationUserId: true,
+          reservationUser: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
         },
       });
       res.json({ ok: true, reservations });

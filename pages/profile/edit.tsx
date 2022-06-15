@@ -26,7 +26,7 @@ interface UserProfileInfo extends User {
   reviews: Review[];
   hearts: {
     select: {
-      likedShopId: true;
+      likedShopId: number;
     };
   };
 }

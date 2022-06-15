@@ -2,13 +2,15 @@
 
 ## To-Dos
 
+--- JUN ---
+
 1. Planetscale Deployment
 2. Vercel Deployment
-3. Cookie removal issues
-4. Make loading button
-5. CSS style complete
-6. Shows reservation list for owner, and user
-7. Make a Naver logout function
+3. CSS style complete
+
+--- MIN --- 4. Shows reservation list for owner, and user 5. Make loading button
+
+--- GON --- 6. Cookie removal issues ( ... ) 7. Make a Naver logout function 8. Limit the length of a rating
 
 ## PATCH NOTE
 

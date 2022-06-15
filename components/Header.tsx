@@ -31,8 +31,7 @@ export default function Header() {
     if (logintype == "Kakao") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
-        const logout_uri =
-          "https://reservation-site-hkpad6u7j-sinclairr08.vercel.app/login";
+        const logout_uri = window.location.href + "/login";
         localStorage.clear();
         await axios.post("/api/logout", {});
         router.push(

@@ -64,8 +64,7 @@ export default function Login() {
   const naverLoginInit = async () => {
     const naverLogin = new window.naver.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID!,
-      callbackUrl:
-        "https://reservation-site-hkpad6u7j-sinclairr08.vercel.app/login",
+      callbackUrl: window.location.href,
       isPopup: false,
       loginButton: { color: "green", type: 1, height: 1 },
     });

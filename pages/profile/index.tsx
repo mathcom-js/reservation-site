@@ -37,7 +37,7 @@ export default function Profile() {
         {data?.userWithDetails?.avatarId ? (
           <img
             src={createImageUrl(data?.userWithDetails.avatarId, "public")}
-            className="w-12 rounded-full"
+            className="w-12 h-12 rounded-full"
           />
         ) : (
           <div className="w-12 h-12 bg-slate-500 rounded-full" />

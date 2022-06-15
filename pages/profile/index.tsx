@@ -95,7 +95,7 @@ export default function Profile() {
           <div key={reservations.id} className="my-2">
             <Link href={`/shops/${reservations.reservationShopId}`}>
               <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
-                {reservations.reservationShop.name} {reservations.date}{" "}
+                {reservations.reservationShop.name} {reservations.date}
                 {reservations.time}
               </a>
             </Link>

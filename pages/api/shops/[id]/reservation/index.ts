@@ -4,63 +4,85 @@ import { withSession } from "@libs/withSession";
 import { withHandler } from "@libs/withHandler";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {
-    session: { user },
-    query: { id },
-    body: { time, date },
-  } = req;
+  if (req.method === "GET") {
+    const {
+      session: { user },
+      query: { id },
+    } = req;
 
-  const now = new Date().toISOString().split("T")[0];
+    try {
+      const reservations = await client.reservation.findMany({
+        where: {
+          reservationShopId: +id,
+        },
+      });
+      res.json({ ok: true, reservations });
+    } catch (error) {
+      res.json({ ok: false, error });
+    }
+  }
 
-  await client.reservation.deleteMany({
-    where: {
-      date: {
-        lt: now,
-      },
-    },
-  });
+  if (req.method === "POST") {
+    const {
+      session: { user },
+      query: { id },
+      body: { time, date },
+    } = req;
 
-  const shopUser = await client.shop.findUnique({
-    where: {
-      id: +id,
-    },
-    select: {
-      userId: true,
-    },
-  });
+    const now = new Date().toISOString().split("T")[0];
 
-  if (shopUser?.userId !== user?.id) {
-    const existedMyReservation = await client.reservation.findMany({
+    await client.reservation.deleteMany({
       where: {
-        reservationUserId: +user?.id!,
-        date,
-        time,
+        date: {
+          lt: now,
+        },
       },
     });
 
-    if (existedMyReservation.length === 0) {
-      const newReservation = await client.reservation.create({
-        data: {
-          time,
+    const shopUser = await client.shop.findUnique({
+      where: {
+        id: +id,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    if (shopUser?.userId !== user?.id) {
+      const existedMyReservation = await client.reservation.findMany({
+        where: {
+          reservationUserId: +user?.id!,
           date,
-          reservationShop: {
-            connect: {
-              id: +id.toString(),
-            },
-          },
-          reservationUser: {
-            connect: {
-              id: user?.id,
-            },
-          },
+          time,
         },
       });
-      res.json({ ok: true, newReservation });
+
+      if (existedMyReservation.length === 0) {
+        const newReservation = await client.reservation.create({
+          data: {
+            time,
+            date,
+            reservationShop: {
+              connect: {
+                id: +id.toString(),
+              },
+            },
+            reservationUser: {
+              connect: {
+                id: user?.id,
+              },
+            },
+          },
+        });
+        res.json({ ok: true, newReservation });
+      }
+      res.json({ ok: false, error: "duplicate with another reservation time" });
+    } else {
+      res.json({ ok: false, error: "access denied" });
     }
-    res.json({ ok: false, error: "duplicate with another reservation time" });
-  } else {
-    res.json({ ok: false, error: "access denied" });
   }
 }
 
-export default withSession(withHandler({ method: ["POST"], fn: handler }));
+export default withSession(
+  withHandler({ method: ["GET", "POST"], fn: handler })
+);

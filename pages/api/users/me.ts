@@ -22,6 +22,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             likedShopId: true,
           },
         },
+        reservations: {
+          select: {
+            id: true,
+            reservationShop: { select: { name: true } },
+            reservationShopId: true,
+            date: true,
+            time: true,
+          },
+        },
       },
     });
 

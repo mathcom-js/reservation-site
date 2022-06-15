@@ -62,15 +62,17 @@ export default function Profile() {
 
       <div className="ml-8 mt-8">
         <span className="text-lg font-semibold mb-8">Your Shops</span>
-        {data?.userWithDetails?.shops.map((shop) => (
-          <div key={shop.id} className="my-2">
-            <Link href={`/shops/${shop.id}`}>
-              <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
-                {shop.name}
-              </a>
-            </Link>
-          </div>
-        ))}
+        <div className="flex space-x-2">
+          {data?.userWithDetails?.shops.map((shop) => (
+            <div key={shop.id} className="my-2">
+              <Link href={`/shops/${shop.id}`}>
+                <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
+                  {shop.name}
+                </a>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="ml-8 mt-8">

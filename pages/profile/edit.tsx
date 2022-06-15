@@ -111,7 +111,7 @@ export default function EditProfile() {
             previewUrl={previewUrl}
           />
 
-          <Button text="Submit" />
+          <Button text={!loading ? "Submit" : "Loading"} />
         </form>
       </div>
       <div></div>

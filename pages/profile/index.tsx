@@ -1,9 +1,16 @@
 import Link from "next/link";
 import Header from "@components/Header";
 import { cls, createImageUrl } from "@libs/utils";
-import { Heart, Review, Shop, User } from "@prisma/client";
+import { Heart, Review, Shop, User, Reservation } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+
+interface MyReservations extends Shop {
+  reservationShop: Shop;
+  reservationShopId: Number;
+  date: String;
+  time: String;
+}
 
 interface UserProfileInfo extends User {
   shops: Shop[];
@@ -13,6 +20,7 @@ interface UserProfileInfo extends User {
       likedShopId: true;
     };
   };
+  reservations: MyReservations[];
 }
 
 interface ReturnInfo {
@@ -23,6 +31,7 @@ interface ReturnInfo {
 export default function Profile() {
   const router = useRouter();
   const { data } = useSWR<ReturnInfo>(`/api/users/me`);
+  console.log(data);
 
   return (
     <>
@@ -58,6 +67,7 @@ export default function Profile() {
           </div>
         ))}
       </div>
+
       <div className="ml-8 mt-8">
         <span className="text-lg font-semibold">Your Reviews</span>
         {data?.userWithDetails?.reviews.map((review) => (
@@ -78,6 +88,20 @@ export default function Profile() {
             ))}
 
             <span className="ml-8">{review.review}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="ml-8 mt-8">
+        <span className="text-lg font-semibold mb-8">Your Reservations</span>
+        {data?.userWithDetails?.reservations.map((reservations) => (
+          <div key={reservations.id} className="my-2">
+            <Link href={`/shops/${reservations.reservationShopId}`}>
+              <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
+                {reservations.reservationShop.name} {reservations.date}{" "}
+                {reservations.time}
+              </a>
+            </Link>
           </div>
         ))}
       </div>

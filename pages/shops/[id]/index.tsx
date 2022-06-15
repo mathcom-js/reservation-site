@@ -1,4 +1,4 @@
-import { Review, Shop, User } from "@prisma/client";
+import { Review, Shop, User, Reservation } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -63,6 +63,13 @@ interface ShopDeleteReturn {
   };
 }
 
+interface MyReservations extends Shop {
+  reservationShop: Shop;
+  reservationShopId: Number;
+  date: String;
+  time: String;
+}
+
 interface UserProfileInfo extends User {
   shops: Shop[];
   reviews: Review[];
@@ -71,6 +78,7 @@ interface UserProfileInfo extends User {
       likedShopId: true;
     };
   };
+  reservations: MyReservations[];
 }
 
 interface ReturnInfo {

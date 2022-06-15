@@ -25,7 +25,7 @@ const ShopThumbnail = ({
   Reviews.forEach((Review) => {
     total += Review.score;
   });
-  const avg = Reviews.length !== 0 ? total / Reviews.length : 0;
+  const avg = (Reviews.length !== 0 ? total / Reviews.length : 0).toFixed(1);
   return (
     <div className="w-full border shadow-lg rounded-xl" key={id}>
       <div className="grid grid-cols-[3fr_2fr]">

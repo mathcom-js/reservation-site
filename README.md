@@ -10,8 +10,6 @@
 
 --- MIN --- 4. Shows reservation list for owner, and user
 
---- GON --- 6. Cookie removal issues ( ... ) 7. Make a Naver logout function 8. Limit the length of a rating
-
 ## PATCH NOTE
 
 ### 06-02
@@ -73,3 +71,7 @@
 3. Style Naver and Kakao button
 4. Make loading button
 5. Add reservation list fetch function
+
+### 06-15
+
+1. Complete a logout function

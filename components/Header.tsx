@@ -7,25 +7,21 @@ export default function Header() {
   const router = useRouter();
 
   const KakaoLogout = () => {
-    if (!window.Kakao.Auth.getAccessToken()) {
-      alert("Not logged in.");
-      return;
-    }
-
-    window.Kakao.Auth.logout(() => {
-      console.log(window.Kakao.Auth.getAccessToken());
+    window.Kakao.Auth.logout(function (response: any) {
+      console.log("okay");
     });
   };
+
   const onLogout = async () => {
     const {
       data: { logintype },
     } = await axios.get("api/users/me/logintype");
 
+    const kakaokey = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
     // Naver?
     if (logintype == "Naver") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
-        alert("로그아웃되었습니다.");
         window.open("https://nid.naver.com/nidlogin.logout");
         await axios.post("/api/logout", {});
         router.push("/login");
@@ -35,11 +31,14 @@ export default function Header() {
     if (logintype == "Kakao") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
-        alert("로그아웃되었습니다.");
+        const logout_uri = "http://localhost:3000/login";
         localStorage.clear();
         await axios.post("/api/logout", {});
+        router.push(
+          `https://kauth.kakao.com/oauth/logout?client_id=${kakaokey}&logout_redirect_uri=${logout_uri}`
+        );
         router.push("/login");
-        // KakaoLogout();
+        KakaoLogout();
       }
     }
     // const value = confirm("로그아웃하시겠습니까?");

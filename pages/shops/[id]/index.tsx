@@ -9,7 +9,6 @@ import Link from "next/link";
 import Button from "@components/Button";
 import { useForm } from "react-hook-form";
 import { minuteToTime, timeToMinute } from "@libs/time";
-import internal from "stream";
 
 interface ReviewWithUser extends User {
   id: number;
@@ -106,6 +105,9 @@ export default function ShopIdElement() {
   const { data, mutate } = useSWR<ShopReturn>(
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
+  const { data: resdata } = useSWR<reservationReturn>(
+    router.query.id ? `/api/shops/${router.query.id}/reservation` : null
+  );
   const { data: retdata } = useSWR<ReturnInfo>("/api/users/me");
 
   const { register, handleSubmit, setValue } = useForm<ReviewForm>();
@@ -113,11 +115,6 @@ export default function ShopIdElement() {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(5);
   const [reviewId, setReviewId] = useState<number | undefined>();
-
-  const { data: resdata } = useSWR<reservationReturn>(
-    `/api/shops/${router.query.id}/reservation`
-  );
-  console.log(resdata);
 
   const onHeartClicked = async () => {
     if (!data || !router.query.id || loading) return;
@@ -411,13 +408,9 @@ export default function ShopIdElement() {
         </div>
       </form>
 
-      <br />
-      <br />
-      <br />
-
       <div
         className={
-          data?.shop.userId === retdata?.userWithDetails.id ? "" : "hidden"
+          data?.shop.userId === retdata?.userWithDetails.id ? "mt-24" : "hidden"
         }
       >
         <span className="py-2 grid items-center mb-2 text-center font-bold">

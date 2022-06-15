@@ -31,7 +31,7 @@ export default function Header() {
     if (logintype == "Kakao") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
-        const logout_uri = "http://localhost:3000/login";
+        const logout_uri = window.location.href + "/login";
         localStorage.clear();
         await axios.post("/api/logout", {});
         router.push(

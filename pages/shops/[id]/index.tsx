@@ -88,10 +88,17 @@ interface ReturnInfo {
 
 export default function ShopIdElement() {
   const router = useRouter();
+
   const { data, mutate } = useSWR<ShopReturn>(
     router.query.id ? `/api/shops/${router.query.id}` : null
   );
+  const { data: retdata } = useSWR<ReturnInfo>("/api/users/me");
+
+  const { register, handleSubmit, setValue } = useForm<ReviewForm>();
+
   const [loading, setLoading] = useState(false);
+  const [score, setScore] = useState(5);
+  const [reviewId, setReviewId] = useState<number | undefined>();
 
   const onHeartClicked = async () => {
     if (!data || !router.query.id || loading) return;
@@ -116,9 +123,6 @@ export default function ShopIdElement() {
     setLoading(false);
   };
 
-  const { register, handleSubmit, setValue } = useForm<ReviewForm>();
-  const [score, setScore] = useState(5);
-
   const onValid = async ({ review }: ReviewForm) => {
     if (loading) return;
     else setLoading(true);
@@ -136,12 +140,10 @@ export default function ShopIdElement() {
       console.log(JSON.stringify(data.error));
       setLoading(false);
     } else {
+      setValue("review", "");
       setLoading(false);
     }
   };
-
-  const { data: retdata } = useSWR<ReturnInfo>("/api/users/me");
-  const [reviewId, setReviewId] = useState<number | undefined>();
 
   const onReviewDeleteClicked = async () => {
     if (loading) return;
@@ -300,11 +302,63 @@ export default function ShopIdElement() {
         )}
       </div>
 
-      <div className="pl-4 mb-8">
-        <div className="flex flex-row mb-2">
-          <span className="font-semibold text-lg mr-10">Reviews</span>
+      <div className="py-2 grid grid-cols-[1fr_1fr_3fr_1fr] items-center mb-2 text-center font-bold">
+        <span>Name</span>
+        <span>Rating</span>
+        <span>Review</span>
+        <span>X</span>
+      </div>
 
-          <form onSubmit={handleSubmit(onValid)} className="flex w-full">
+      {data?.shop.Reviews.map((review) => (
+        <div
+          key={review.id}
+          className="py-2 grid grid-cols-[1fr_1fr_3fr_1fr] items-center mb-2 text-center"
+        >
+          <span>{review.createdUser.username}</span>
+          <div className="flex items-center justify-center">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <svg
+                key={star}
+                className={cls(
+                  "w-5 h-5",
+                  star <= review.score ? "text-yellow-400" : "text-gray-600"
+                )}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+            ))}
+          </div>
+
+          <span>{review.review}</span>
+          <form onSubmit={handleSubmit(onReviewDeleteClicked)}>
+            {retdata && review.createdUserId === retdata.userWithDetails.id ? (
+              <button
+                onClick={() => {
+                  setReviewId(review.id);
+                }}
+                className="text-red-500 font-bold"
+              >
+                X
+              </button>
+            ) : (
+              <></>
+            )}
+          </form>
+        </div>
+      ))}
+
+      <div className="w-full py-2 my-4 font-semibold text-center">
+        Add your review
+      </div>
+
+      <form onSubmit={handleSubmit(onValid)}>
+        <div className="py-2 grid grid-cols-[1fr_1fr_3fr_1fr] items-center mb-2 text-center">
+          <span>{retdata?.userWithDetails.username}</span>
+
+          <div className="flex items-center justify-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
@@ -322,53 +376,17 @@ export default function ShopIdElement() {
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
               </svg>
             ))}
-            <textarea
-              className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md pl-1.5 w-full mr-5"
-              {...register("review")}
-            />
-            <Button text="Submit" />
-          </form>
-        </div>
-
-        {data?.shop.Reviews.map((review) => (
-          <div key={review.id} className="py-2 flex items-center">
-            <span className="ml-8 w-20">{review.createdUser.username}</span>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <svg
-                key={star}
-                className={cls(
-                  "w-5 h-5",
-                  star <= review.score ? "text-yellow-400" : "text-gray-600"
-                )}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-              </svg>
-            ))}
-
-            <span className="ml-8">{review.review}</span>
-            <form
-              onSubmit={handleSubmit(onReviewDeleteClicked)}
-              className="ml-auto mr-8"
-            >
-              {retdata &&
-              review.createdUserId === retdata.userWithDetails.id ? (
-                <button
-                  onClick={() => {
-                    setReviewId(review.id);
-                  }}
-                >
-                  Delete
-                </button>
-              ) : (
-                <></>
-              )}
-            </form>
           </div>
-        ))}
-      </div>
+          <input
+            type="text"
+            className="focus:outline-none focus:border-violet-400 border-2 border-gray-200 rounded-md px-2 mx-8"
+            {...register("review")}
+          />
+          <div>
+            <Button text="Submit" />
+          </div>
+        </div>
+      </form>
     </>
   );
 }

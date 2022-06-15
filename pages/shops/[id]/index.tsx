@@ -70,9 +70,20 @@ interface MyReservations extends Shop {
   time: String;
 }
 
+interface myReview extends User, Shop {
+  id: number;
+  createdAt: Date;
+  review: string;
+  createdUserId: number;
+  createdUser: User;
+  commentedShopId: number;
+  commentedShop: Shop;
+  score: number;
+}
+
 interface UserProfileInfo extends User {
   shops: Shop[];
-  reviews: Review[];
+  reviews: myReview[];
   hearts: {
     select: {
       likedShopId: true;

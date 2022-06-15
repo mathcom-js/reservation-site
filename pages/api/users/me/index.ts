@@ -14,7 +14,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         id: user?.id,
       },
       include: {
-        reviews: true,
+        reviews: {
+          select: {
+            id: true,
+            createdAt: true,
+            review: true,
+            createdUserId: true,
+            createdUser: { select: { username: true } },
+            commentedShopId: true,
+            commentedShop: { select: { name: true } },
+            score: true,
+          },
+        },
         shops: true,
         hearts: {
           select: {

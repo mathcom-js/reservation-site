@@ -6,14 +6,25 @@ import useSWR from "swr";
 
 interface MyReservations extends Shop {
   reservationShop: Shop;
-  reservationShopId: Number;
-  date: String;
-  time: String;
+  reservationShopId: number;
+  date: string;
+  time: number;
+}
+
+interface myReview extends User, Shop {
+  id: number;
+  createdAt: Date;
+  review: string;
+  createdUserId: number;
+  createdUser: User;
+  commentedShopId: number;
+  commentedShop: Shop;
+  score: number;
 }
 
 interface UserProfileInfo extends User {
   shops: Shop[];
-  reviews: Review[];
+  reviews: myReview[];
   hearts: {
     select: {
       likedShopId: true;
@@ -69,6 +80,10 @@ export default function Profile() {
         <span className="text-lg font-semibold">Your Reviews</span>
         {data?.userWithDetails?.reviews.map((review) => (
           <div key={review.id} className="py-2 flex items-center">
+            <Link href={`/shops/${review.commentedShopId}`}>
+              <a className="mr-8">{review?.commentedShop?.name}</a>
+            </Link>
+
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 className={cls(
@@ -89,16 +104,26 @@ export default function Profile() {
         ))}
       </div>
 
-      <div className="ml-8 mt-8">
-        <span className="text-lg font-semibold mb-8">Your Reservations</span>
-        {data?.userWithDetails?.reservations.map((reservations) => (
-          <div key={reservations.id} className="my-2">
-            <Link href={`/shops/${reservations.reservationShopId}`}>
-              <a className="rounded-md bg-violet-400 text-white px-3 py-1.5">
-                {reservations.reservationShop.name} {reservations.date}
-                {reservations.time}
-              </a>
+      <div className="mt-8">
+        <span className="ml-8 text-lg font-semibold">Your Reservation</span>
+        <div className="mt-8 py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center font-bold">
+          <span>Shop Name</span>
+          <span>Date</span>
+          <span>Time</span>
+        </div>
+
+        {data?.userWithDetails?.reservations?.map((res) => (
+          <div
+            key={res.id}
+            className="py-2 grid grid-cols-[1fr_1fr_1fr] items-center mb-2 text-center"
+          >
+            <Link href={`/shops/${res.reservationShopId}`}>
+              <a>{res.reservationShop.name}</a>
             </Link>
+            <span>{res.date}</span>
+            <span>
+              {Math.floor(res.time / 60)}시 {res.time % 60}분
+            </span>
           </div>
         ))}
       </div>

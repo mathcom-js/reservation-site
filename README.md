@@ -8,8 +8,6 @@
 2. Vercel Deployment
 3. CSS style complete
 
---- MIN --- 4. Shows reservation list for owner, and user
-
 ## PATCH NOTE
 
 ### 06-02
@@ -70,8 +68,9 @@
 2. API checks user when using session
 3. Style Naver and Kakao button
 4. Make loading button
-5. Add reservation list fetch function
 
 ### 06-15
 
 1. Complete a logout function
+2. Add reservation list fetch function
+3. Shows reservation list for owner, and user

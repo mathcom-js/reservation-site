@@ -12,7 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 
 interface EditedForm {
   name: string;

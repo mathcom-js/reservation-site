@@ -5,8 +5,7 @@ import { withHandler } from "@libs/withHandler";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    query: { id, reviewId },
-    session: { user },
+    query: { reviewId },
   } = req;
 
   try {

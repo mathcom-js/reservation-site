@@ -137,7 +137,7 @@ export default function ShopIdElement() {
     mutate();
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       setValue("review", "");
@@ -155,7 +155,7 @@ export default function ShopIdElement() {
     mutate();
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       setLoading(false);
@@ -181,7 +181,7 @@ export default function ShopIdElement() {
         );
 
         if (!data.ok) {
-          console.log(JSON.stringify(data.error));
+          console.log(data.error);
         } else {
           router.push("/");
         }

@@ -82,7 +82,7 @@ export default function EditProfile() {
     const { data }: EditReturn = await axios.put("/api/users/me", block);
 
     if (!data.ok) {
-      console.log(JSON.stringify(data.error));
+      console.log(data.error);
       setLoading(false);
     } else {
       router.push("/profile");

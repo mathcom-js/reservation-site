@@ -8,7 +8,7 @@ import KakaoImg from "../public/KakaoImg.png";
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const naverRef = useRef();
+  const naverRef = useRef<any>();
 
   const kakaoLogin = () => {
     if (loading) return;

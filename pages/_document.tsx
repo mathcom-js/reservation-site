@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default class MyDocument extends Document {
   render() {
@@ -7,11 +8,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8"></meta>
           <body>
-            <script
+            <Script
               defer
               src="https://developers.kakao.com/sdk/js/kakao.js"
-            ></script>
-            <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></script>
+            ></Script>
+            <Script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"></Script>
             <Main />
             <NextScript />
           </body>

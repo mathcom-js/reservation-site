@@ -13,10 +13,6 @@ declare global {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
-  }, []);
-
   return (
     <SWRConfig
       value={{

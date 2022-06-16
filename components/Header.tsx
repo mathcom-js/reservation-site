@@ -18,7 +18,6 @@ export default function Header() {
     } = await axios.get("api/users/me/logintype");
 
     const kakaokey = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-    // Naver?
     if (logintype == "Naver") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
@@ -31,7 +30,7 @@ export default function Header() {
     if (logintype == "Kakao") {
       const value = confirm("로그아웃하시겠습니까?");
       if (value) {
-        const logout_uri = window.location.href + "/login";
+        const logout_uri = window.location.href + "login";
         localStorage.clear();
         await axios.post("/api/logout", {});
         router.push(
@@ -41,12 +40,6 @@ export default function Header() {
         KakaoLogout();
       }
     }
-    // const value = confirm("로그아웃하시겠습니까?");
-    // if (value) {
-    //   await axios.post("/api/logout", {});
-    //   alert("로그아웃되었습니다.");
-    //   router.push("/login");
-    // }
   };
 
   return (

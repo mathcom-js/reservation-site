@@ -58,8 +58,12 @@ export default function Login() {
   }, [router]);
 
   useEffect(() => {
-    naverLoginInit();
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+    try {
+      naverLoginInit();
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   const naverLoginInit = async () => {

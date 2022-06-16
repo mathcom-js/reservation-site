@@ -78,3 +78,4 @@ https://reservation-site.vercel.app
 1. Fix client error on deploy
 2. Register right URL at OAuth
 3. Fix reservation API error
+4. Add loading state at login page

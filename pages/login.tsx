@@ -53,8 +53,11 @@ export default function Login() {
 
   useEffect(() => {
     const token_info = router.asPath.split("#")[1];
-    if (token_info)
-      axios.post("/api/users/naver", token_info).then(() => router.push("/"));
+    if (token_info) setLoading(true);
+    axios
+      .post("/api/users/naver", token_info)
+      .then(() => router.push("/"))
+      .finally(() => setLoading(false));
   }, [router]);
 
   useEffect(() => {
@@ -77,7 +80,16 @@ export default function Login() {
   };
 
   const naverLogin = () => {
-    naverRef.current.children[0].click();
+    if (loading) return;
+    else setLoading(true);
+
+    try {
+      naverRef.current.children[0].click();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,28 +97,36 @@ export default function Login() {
       <h1 className="text-center text-lg text-violet-400">
         Make Your Reservation!
       </h1>
-
-      <div className="grid grid-cols-2">
-        <div className="hidden" id="naverIdLogin" ref={naverRef} />
-        <button
-          className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
+      {!loading ? (
+        <div className="grid grid-cols-2">
+          <div className="hidden" id="naverIdLogin" ref={naverRef} />
+          <button
+            className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
                   hover:bg-slate-50 transition-colors rounded-md"
-          onClick={naverLogin}
-        >
-          <div className="w-8 h-8">
-            <Image src={NaverImg} />
-          </div>
-        </button>
-        <button
-          className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
+            onClick={naverLogin}
+          >
+            <div className="w-8 h-8">
+              <Image src={NaverImg} />
+            </div>
+          </button>
+          <button
+            className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
            hover:bg-slate-50 transition-colors rounded-md"
-          onClick={kakaoLogin}
-        >
-          <div className="w-8 h-8">
-            <Image src={KakaoImg} />
-          </div>
-        </button>
-      </div>
+            onClick={kakaoLogin}
+          >
+            <div className="w-8 h-8">
+              <Image src={KakaoImg} />
+            </div>
+          </button>
+        </div>
+      ) : (
+        <div className="w-full text-center flex flex-col">
+          <span className="text-2xl">Loading now...</span>
+          <span className="text-lg mt-4">
+            If you see this message for a long time, please refresh a page
+          </span>
+        </div>
+      )}
     </div>
   );
 }

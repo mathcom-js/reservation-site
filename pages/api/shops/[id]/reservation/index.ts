@@ -85,8 +85,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           },
         });
         res.json({ ok: true, newReservation });
+      } else {
+        res.json({
+          ok: false,
+          error: "duplicate with another reservation time",
+        });
       }
-      res.json({ ok: false, error: "duplicate with another reservation time" });
     } else {
       res.json({ ok: false, error: "access denied" });
     }

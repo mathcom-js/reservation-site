@@ -4,14 +4,20 @@ import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
 import NaverImg from "../public/NaverImg.png";
 import KakaoImg from "../public/KakaoImg.png";
+import Button from "@components/Button";
 
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState(false);
   const naverRef = useRef<any>();
 
+  const kakaoLoginInit = () => {
+    return window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+  };
+
   const kakaoLogin = () => {
-    if (loading) return;
+    if (loading || loadingError) return;
     else setLoading(true);
 
     try {
@@ -51,36 +57,24 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    const token_info = router.asPath.split("#")[1];
-    if (token_info) setLoading(true);
-    axios
-      .post("/api/users/naver", token_info)
-      .then(() => router.push("/"))
-      .finally(() => setLoading(false));
-  }, [router]);
-
-  useEffect(() => {
+  const naverLoginInit = () => {
+    if (loadingError) return;
     try {
-      naverLoginInit();
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+      const naverLogin = new window.naver.LoginWithNaverId({
+        clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID!,
+        callbackUrl: window.location.href,
+        isPopup: false,
+        loginButton: { color: "green", type: 1, height: 1 },
+      });
+      naverLogin.init();
     } catch (err) {
+      setLoadingError(true);
       console.log(err);
     }
-  }, []);
-
-  const naverLoginInit = async () => {
-    const naverLogin = new window.naver.LoginWithNaverId({
-      clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID!,
-      callbackUrl: window.location.href,
-      isPopup: false,
-      loginButton: { color: "green", type: 1, height: 1 },
-    });
-    naverLogin.init();
   };
 
   const naverLogin = () => {
-    if (loading) return;
+    if (loading || loadingError) return;
     else setLoading(true);
 
     try {
@@ -91,6 +85,27 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const token_info = router.asPath.split("#")[1];
+    if (token_info) {
+      setLoading(true);
+      axios
+        .post("/api/users/naver", token_info)
+        .then(() => router.push("/"))
+        .finally(() => setLoading(false));
+    }
+  }, [router]);
+
+  useEffect(() => {
+    try {
+      naverLoginInit();
+      kakaoLoginInit();
+    } catch (err) {
+      setLoadingError(true);
+      console.log(err);
+    }
+  }, []);
 
   return (
     <div className="max-w-xl w-full flex flex-col mx-auto space-y-8">
@@ -125,6 +140,29 @@ export default function Login() {
           <span className="text-lg mt-4">
             If you see this message for a long time, please refresh a page
           </span>
+          <div
+            className="mt-4"
+            onClick={() => {
+              router.reload();
+            }}
+          >
+            <Button text="Reload" />
+          </div>
+        </div>
+      )}
+      {loadingError && (
+        <div className="w-full flex flex-col items-center justify-center">
+          <span className="text-lg text-violet-400 pt-12">
+            Oops! Error occurred when loading a data!
+          </span>
+          <div
+            className="mt-4"
+            onClick={() => {
+              router.reload();
+            }}
+          >
+            <Button text="Reload" />
+          </div>
         </div>
       )}
     </div>

@@ -1,5 +1,9 @@
 # Reservation-site
 
+## FINAL DEPLOYMNET
+
+https://reservation-site.vercel.app
+
 ## PATCH NOTE
 
 ### 06-02
@@ -68,3 +72,9 @@
 3. Shows reservation list for owner and user
 4. Css style complete
 5. Deploy DB and project
+
+### 06-16
+
+1. Fix client error on deploy
+2. Register right URL at OAuth
+3. Fix reservation API error

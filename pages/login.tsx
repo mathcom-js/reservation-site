@@ -59,6 +59,7 @@ export default function Login() {
 
   useEffect(() => {
     naverLoginInit();
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
   }, []);
 
   const naverLoginInit = async () => {

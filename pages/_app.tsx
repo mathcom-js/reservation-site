@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import Footer from "@components/Footer";
 import { SWRConfig } from "swr";
 import axios from "axios";
-import { useEffect } from "react";
 
 declare global {
   interface Window {

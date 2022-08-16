@@ -1,9 +1,9 @@
-import { Review, Shop, User, Reservation } from "@prisma/client";
+import { Shop, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import GuestHeader from "@components/GuestHeader";
 import { cls, createImageUrl } from "@libs/utils";
-import { minuteToTime, timeToMinute } from "@libs/time";
+import { minuteToTime } from "@libs/time";
 
 interface ReviewWithUser extends User {
   id: number;

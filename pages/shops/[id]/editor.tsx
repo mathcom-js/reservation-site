@@ -7,7 +7,7 @@ import {
   TimePairInput,
 } from "@components/Input";
 import { isPeriodical, minuteToTime, timeToMinute } from "@libs/time";
-import { Shop, User } from "@prisma/client";
+import { Shop } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

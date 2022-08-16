@@ -1,4 +1,4 @@
-import { Shop, Review, User } from "@prisma/client";
+import { Shop, Review } from "@prisma/client";
 import useSWR from "swr";
 import Header from "@components/Header";
 import ShopThumbnail from "@components/ShopThumbnail";

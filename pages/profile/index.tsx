@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "@components/Header";
 import { cls, createImageUrl } from "@libs/utils";
-import { Review, Shop, User } from "@prisma/client";
+import { Shop, User } from "@prisma/client";
 import useSWR from "swr";
 
 interface MyReservations extends Shop {

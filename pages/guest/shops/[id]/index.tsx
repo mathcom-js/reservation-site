@@ -1,8 +1,7 @@
 import { Review, Shop, User, Reservation } from "@prisma/client";
-import axios from "axios";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import Header from "@components/Header";
+import GuestHeader from "@components/GuestHeader";
 import { cls, createImageUrl } from "@libs/utils";
 import { minuteToTime, timeToMinute } from "@libs/time";
 
@@ -37,7 +36,7 @@ export default function ShopIdElement() {
 
   return (
     <>
-      <Header />
+      <GuestHeader />
       <div className="relative">
         <h1 className="text-center text-xl text-violet-400">
           {data?.shop.name}

@@ -10,17 +10,20 @@ interface ShopInfo extends Shop {
   };
 }
 
-const ShopThumbnail = ({
-  description,
-  endTime,
-  startTime,
-  imageId,
-  id,
-  location,
-  name,
-  Reviews,
-  _count: { hearts },
-}: ShopInfo) => {
+const ShopThumbnail = (
+  {
+    description,
+    endTime,
+    startTime,
+    imageId,
+    id,
+    location,
+    name,
+    Reviews,
+    _count: { hearts },
+  }: ShopInfo,
+  isGuest = false
+) => {
   let total = 0;
   Reviews.forEach((Review) => {
     total += Review.score;
@@ -29,7 +32,7 @@ const ShopThumbnail = ({
   return (
     <div className="w-full border shadow-lg rounded-xl" key={id}>
       <div className="grid grid-cols-2">
-        <Link href={`/shops/${id}`}>
+        <Link href={isGuest ? `/guest/shops/${id}` : `/shops/${id}`}>
           <a className="flex items-center justify-center py-4">
             {imageId ? (
               <img src={createImageUrl(imageId, "regular")} className="w-64" />

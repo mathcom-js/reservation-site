@@ -109,7 +109,10 @@ export default function Register() {
     } else {
       block = box;
     }
-    const { data }: RegisterReturn = await axios.post("/api/shops", block);
+    const { data }: RegisterReturn = await axios.post(
+      "/api/shops/create",
+      block
+    );
 
     if (!data.ok) {
       console.log(data.error);

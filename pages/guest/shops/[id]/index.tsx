@@ -26,14 +26,13 @@ interface ShopWithDetails extends Shop {
 interface ShopReturn {
   ok: boolean;
   shop: ShopWithDetails;
-  isLiked: boolean;
 }
 
 export default function ShopIdElement() {
   const router = useRouter();
 
-  const { data, mutate } = useSWR<ShopReturn>(
-    router.query.id ? `/api/shops/${router.query.id}` : null
+  const { data } = useSWR<ShopReturn>(
+    router.query.id ? `/api/shops/${router.query.id}/guest` : null
   );
 
   return (
@@ -43,6 +42,22 @@ export default function ShopIdElement() {
         <h1 className="text-center text-xl text-violet-400">
           {data?.shop.name}
         </h1>
+        <button className="absolute right-4">
+          <svg
+            className="w-5 h-5 text-pink-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+
+          <span className="text-pink-500">{data?.shop._count.hearts}</span>
+        </button>
       </div>
       <div className="flex justify-center items-center my-8">
         {data?.shop.imageId ? (

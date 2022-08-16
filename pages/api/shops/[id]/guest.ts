@@ -4,21 +4,36 @@ import { withSession } from "@libs/withSession";
 import { withHandler } from "@libs/withHandler";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const shops = await client.shop.findMany({
+  const {
+    query: { id },
+  } = req;
+  const shop = await client.shop.findUnique({
+    where: {
+      id: +id,
+    },
     include: {
-      Reviews: {
-        select: {
-          score: true,
-        },
-      },
       _count: {
         select: {
           hearts: true,
         },
       },
+      Reviews: {
+        select: {
+          id: true,
+          review: true,
+          score: true,
+          createdUserId: true,
+          createdUser: true,
+        },
+      },
+      user: {
+        select: {
+          username: true,
+        },
+      },
     },
   });
-  res.json({ ok: true, shops });
+  res.json({ ok: true, shop });
 }
 
 export default withHandler({ method: ["GET"], fn: handler, isSession: false });

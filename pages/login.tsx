@@ -165,6 +165,18 @@ export default function Login() {
           </div>
         </div>
       )}
+
+      <div className="grid">
+        <button
+          className="flex items-center justify-center border border-gray-200 py-2 text-xs text-gray-400
+                  hover:bg-slate-50 transition-colors rounded-md"
+          onClick={() => {
+            router.push("/guest");
+          }}
+        >
+          Guest Login
+        </button>
+      </div>
     </div>
   );
 }

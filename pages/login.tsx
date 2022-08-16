@@ -13,7 +13,9 @@ export default function Login() {
   const naverRef = useRef<any>();
 
   const kakaoLoginInit = () => {
-    return window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+    if (!window.Kakao.isInitialized()) {
+      return window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY!);
+    }
   };
 
   const kakaoLogin = () => {

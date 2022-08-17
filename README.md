@@ -79,3 +79,11 @@ https://reservation-site.vercel.app
 2. Register right URL at OAuth
 3. Fix reservation API error
 4. Add loading state at login page
+
+### 08-16
+
+1. Add guest page
+
+### 08-17
+
+1. Prevent duplicate reservation

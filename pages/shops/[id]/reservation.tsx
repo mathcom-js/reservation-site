@@ -92,6 +92,7 @@ export default function Register() {
     if (!data.ok) {
       alert(data.error);
       setLoading(false);
+      router.reload();
     } else {
       router.push(`/shops/${router.query.id}`);
     }

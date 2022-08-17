@@ -85,6 +85,7 @@ model Reservation {
   reservationShop   Shop     @relation(fields: [reservationShopId], references: [id], onDelete: Cascade)
   reservationShopId Int
 
+  @@unique([time, date, reservationShopId])
   @@index([reservationUserId])
   @@index([reservationShopId])
 }

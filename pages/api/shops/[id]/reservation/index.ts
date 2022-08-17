@@ -68,27 +68,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
 
       if (existedMyReservation.length === 0) {
-        const newReservation = await client.reservation.create({
-          data: {
-            time,
-            date,
-            reservationShop: {
-              connect: {
-                id: +id.toString(),
+        try {
+          const newReservation = await client.reservation.create({
+            data: {
+              time,
+              date,
+              reservationShop: {
+                connect: {
+                  id: +id.toString(),
+                },
+              },
+              reservationUser: {
+                connect: {
+                  id: user?.id,
+                },
               },
             },
-            reservationUser: {
-              connect: {
-                id: user?.id,
-              },
-            },
-          },
-        });
-        res.json({ ok: true, newReservation });
+          });
+          res.json({ ok: true, newReservation });
+        } catch (error) {
+          res.json({
+            ok: false,
+            error: "Oops! maybe someone made a reservation first",
+          });
+        }
       } else {
         res.json({
           ok: false,
-          error: "duplicate with another reservation time",
+          error: "conflicts with your another reservation time",
         });
       }
     } else {

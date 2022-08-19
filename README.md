@@ -28,6 +28,25 @@ https://reservation-site.vercel.app
 
 ---
 
+- Register a shop
+  ![](/public/5-register-shop.png)
+
+---
+
+- Edit/Delete shop
+  ![](/public/6-shop-delete-edit.png)
+
+-> Delete shop
+![](/public/6-1-shop-delete.png)
+
+-> Edit shop
+![](/public/6-2-shop-edit.png)
+
+---
+
+- Reservation List
+  ![](/public/7-reservation-list.png)
+
 ## History
 
 [History](/history.md)

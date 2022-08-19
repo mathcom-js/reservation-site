@@ -170,10 +170,13 @@ export default function ShopIdElement() {
     if (loading) return;
     else setLoading(true);
 
-    if (confirm("정말로 삭제하시겠습니까")) {
-      const deleteCheck = prompt("진짜삭제?", "가게의 이름을 입력해주세요");
+    if (confirm("상점을 삭제하시겠습니까?")) {
+      const deleteCheck = prompt(
+        "정말로 삭제하시겠습니까?",
+        "가게의 이름을 입력해주세요"
+      );
       if (data && deleteCheck === data.shop.name) {
-        alert("와! 삭제!");
+        alert("삭제가 완료되었습니다");
         const { data }: ShopDeleteReturn = await axios.delete(
           `/api/shops/${router.query.id}`
         );
@@ -184,7 +187,7 @@ export default function ShopIdElement() {
           router.push("/");
         }
       } else {
-        alert("가게 이름이 틀립니다. 삭제실패");
+        alert("가게 이름을 잘못 입력하셨습니다. 삭제 실패");
       }
     } else {
     }

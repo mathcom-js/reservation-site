@@ -47,6 +47,28 @@ https://reservation-site.vercel.app
 - Reservation List
   ![](/public/7-reservation-list.png)
 
+---
+
+- Show my profile
+  ![](/public/8-show-my-profile.png)
+
+---
+
+- Edit my profile
+  ![](/public/9-edit-my-profile.png)
+
+---
+
+- Do sign-in and sign-out
+
+-> Do sign-in
+![](/public/10-1-do-sign-in.png)
+
+-> Do sign-out
+![](/public/10-2-do-sign-out.png)
+
+---
+
 ## History
 
 [History](/history.md)

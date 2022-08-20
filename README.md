@@ -10,8 +10,6 @@
 
 ## Overview
 
----
-
 <br>
 
 ### **Customers**
@@ -108,8 +106,6 @@
   ![](/public/10-2-do-sign-out.png)
   <div align="center"><b>Sign-out</b></div>
   <br>
-
----
 
 <br>
 

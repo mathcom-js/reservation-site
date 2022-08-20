@@ -81,3 +81,8 @@
 ### 08-17
 
 1. Prevent duplicate reservation
+
+### 08-20
+
+1. Update README
+2. Fix logout bug

@@ -13,18 +13,17 @@ https://reservation-site.vercel.app
 
 ---
 
-- View shop details
+- Shop details
   ![](/public/2-shop-details.PNG)
 
----
+  - Create a shop review
+    ![](/public/3-write-review.PNG)
 
-- Create a shop review
-  ![](/public/3-write-review.PNG)
+  - Make a shop reservation at available time
+    ![](/public/4-reservate-shop.PNG)
 
----
-
-- Make a shop reservation at available time
-  ![](/public/4-reservate-shop.PNG)
+  - Reservation List (If shop owner)
+    ![](/public/7-reservation-list.png)
 
 ---
 
@@ -36,16 +35,11 @@ https://reservation-site.vercel.app
 - Edit/Delete shop
   ![](/public/6-shop-delete-edit.png)
 
--> Delete shop
-![](/public/6-1-shop-delete.png)
+  - Delete shop
+    ![](/public/6-1-shop-delete.png)
 
--> Edit shop
-![](/public/6-2-shop-edit.png)
-
----
-
-- Reservation List
-  ![](/public/7-reservation-list.png)
+  - Edit shop
+    ![](/public/6-2-shop-edit.png)
 
 ---
 
@@ -61,11 +55,11 @@ https://reservation-site.vercel.app
 
 - Do sign-in and sign-out
 
--> Do sign-in
-![](/public/10-1-do-sign-in.png)
+  - Do sign-in
+    ![](/public/10-1-do-sign-in.png)
 
--> Do sign-out
-![](/public/10-2-do-sign-out.png)
+  - Do sign-out
+    ![](/public/10-2-do-sign-out.png)
 
 ---
 

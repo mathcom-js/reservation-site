@@ -1,6 +1,5 @@
 # Management
 
-<br>
 &nbsp;If you are owner of shop, you can <b>reigister your shop</b> with name, time, description and location.
 <br><br>
 &nbsp;You also should select <b>the period</b> of reservation time.

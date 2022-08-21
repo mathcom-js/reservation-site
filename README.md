@@ -2,13 +2,9 @@
 
 ## Site URL
 
-<br>
-
 - **https://reservation-site.vercel.app**
 
 ## Overview
-
-<br>
 
 - [**Customers**](/readme/customers.md)
 - [**Management**](/readme/management.md)

@@ -1,6 +1,5 @@
 # Customers
 
-<br>
 &nbsp;You can see a <b>list of shops</b> on the home page, and can click on a image to see details.
 <br><br>
 &nbsp;In details page, you can <b>create a shop review</b> or <b>make a reservation</b> at available time.

@@ -1,6 +1,5 @@
 # Profile
 
-<br>
 &nbsp;You can see your <b>profile, shops</b> and <b>reservations</b> at profile page.
 <br><br>
 &nbsp;If you click edit button, you can <b>change</b> your <b>name or avatar</b>.

@@ -1,9 +1,9 @@
-# Profiles
+# Profile
 
 <br>
-&nbsp;You can see your profile at profile page. Your can see your shops and reservations.
-<br>
-&nbsp;If you click edit button, you can change your name or avatar
+&nbsp;You can see your <b>profile, shops</b> and <b>reservations</b> at profile page.
+<br><br>
+&nbsp;If you click edit button, you can <b>change</b> your <b>name or avatar</b>.
 <br><br><br>
 
 ![](/public/8-show-my-profile.png)

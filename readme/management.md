@@ -1,9 +1,11 @@
 # Management
 
 <br>
-&nbsp;If you are owner of shop, you can reigister your shop with name, time, description and location. You also should select period of reservation time.
-<br>
-&nbsp;Registerd shops can be editted and deleted at shop detail page. You also can view list of reservation of your shop.
+&nbsp;If you are owner of shop, you can <b>reigister your shop</b> with name, time, description and location.
+<br><br>
+&nbsp;You also should select <b>the period</b> of reservation time.
+<br><br>
+&nbsp;Registerd shops can be <b>editted or deleted</b> at shop detail page. You also can view <b>list of reservation</b> of your shop.
 <br><br><br>
 
 ![](/public/5-register-shop.png)

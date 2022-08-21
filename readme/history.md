@@ -86,3 +86,8 @@
 
 1. Update README
 2. Fix logout bug
+
+### 08-21
+
+1. Final README chanage
+2. Deployment

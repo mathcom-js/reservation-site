@@ -1,9 +1,9 @@
 # Customers
 
 <br>
-&nbsp;You can see a list of shops on the home page, and can click on a image to see details.
-<br>
-&nbsp;In details page, you can create a shop review or make a reservation at available time
+&nbsp;You can see a <b>list of shops</b> on the home page, and can click on a image to see details.
+<br><br>
+&nbsp;In details page, you can <b>create a shop review</b> or <b>make a reservation</b> at available time.
 <br><br><br>
 
 ![](/public/1-browse-shops.PNG)

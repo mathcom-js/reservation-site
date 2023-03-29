@@ -140,12 +140,12 @@ export default function Login() {
         <div className="w-full text-center flex flex-col">
           <span className="text-2xl">Loading now...</span>
           <span className="text-lg mt-4">
-            If you see this message for a long time, please refresh a page
+            If you see this message for a long time, please press a button
           </span>
           <div
             className="mt-4"
             onClick={() => {
-              router.reload();
+              router.push("/reload");
             }}
           >
             <Button text="Reload" />
@@ -155,13 +155,12 @@ export default function Login() {
       {loadingError && (
         <div className="w-full flex flex-col items-center justify-center">
           <span className="text-lg text-violet-400 pt-12">
-            Oops! Error occurred when loading a data!
+            Error occurred when loading a data! please press a button
           </span>
           <div
             className="mt-4"
             onClick={() => {
-              router.push("/guest");
-              router.push("/");
+              router.push("/reload");
             }}
           >
             <Button text="Reload" />

@@ -2,7 +2,7 @@ import { Shop, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import GuestHeader from "@components/GuestHeader";
-import { cls, createImageUrl } from "@libs/utils";
+import { cls } from "@libs/utils";
 import { minuteToTime } from "@libs/time";
 
 interface ReviewWithUser extends User {
@@ -60,10 +60,7 @@ export default function ShopIdElement() {
       </div>
       <div className="flex justify-center items-center my-8">
         {data?.shop.imageId ? (
-          <img
-            src={createImageUrl(data?.shop.imageId, "public")}
-            className="h-96"
-          />
+          <img src={data?.shop.imageId} className="h-96" />
         ) : (
           <div className="w-96 h-96 bg-slate-200" />
         )}

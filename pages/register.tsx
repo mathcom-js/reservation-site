@@ -95,16 +95,16 @@ export default function Register() {
     };
     let block;
     if (shopimage && shopimage.length > 0) {
+      let formData = new FormData();
+      formData.append("file", shopimage[0]);
+
       const {
         data: { uploadURL },
-      } = await axios.get("/api/image");
+      } = await axios.post("/api/image", formData);
 
-      const formData = new FormData();
-      formData.append("file", shopimage[0], "test");
-      const { data } = await axios.post(uploadURL, formData);
       block = {
         ...box,
-        imageId: data.result.id,
+        imageId: uploadURL,
       };
     } else {
       block = box;

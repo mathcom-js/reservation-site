@@ -1,7 +1,6 @@
 import { minuteToTime } from "@libs/time";
 import { Shop, Review } from "@prisma/client";
 import Link from "next/link";
-import { createImageUrl } from "../libs/utils";
 
 interface ShopInfo extends Shop {
   Reviews: Review[];
@@ -35,7 +34,7 @@ const ShopThumbnail = (
         <Link href={isGuest ? `/guest/shops/${id}` : `/shops/${id}`}>
           <a className="flex items-center justify-center py-4">
             {imageId ? (
-              <img src={createImageUrl(imageId, "regular")} className="w-64" />
+              <img src={imageId} className="w-64" />
             ) : (
               <div className="w-64 h-64 bg-slate-200" />
             )}

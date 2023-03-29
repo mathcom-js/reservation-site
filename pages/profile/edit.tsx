@@ -66,15 +66,16 @@ export default function EditProfile() {
     }
 
     let block;
-    const {
-      data: { uploadURL },
-    } = await axios.get("/api/image");
 
-    const formData = new FormData();
     if (avatar && avatar.length > 0) {
-      formData.append("file", avatar[0], "test");
-      const { data: idReturn } = await axios.post(uploadURL, formData);
-      block = { username, avatarId: idReturn.result.id };
+      let formData = new FormData();
+      formData.append("file", avatar[0]);
+
+      const {
+        data: { uploadURL },
+      } = await axios.post("/api/image", formData);
+
+      block = { username, avatarId: uploadURL };
     } else {
       block = { username };
     }

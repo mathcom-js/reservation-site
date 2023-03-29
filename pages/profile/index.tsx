@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Header from "@components/Header";
-import { cls, createImageUrl } from "@libs/utils";
+import { cls } from "@libs/utils";
 import { Shop, User } from "@prisma/client";
 import useSWR from "swr";
 
@@ -44,7 +44,7 @@ export default function Profile() {
       <div className="flex items-center space-x-8 ml-8">
         {data?.userWithDetails?.avatarId ? (
           <img
-            src={createImageUrl(data?.userWithDetails.avatarId, "public")}
+            src={data?.userWithDetails.avatarId}
             className="w-12 h-12 rounded-full"
           />
         ) : (

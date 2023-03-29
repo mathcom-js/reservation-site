@@ -160,7 +160,7 @@ export default function Login() {
           <div
             className="mt-4"
             onClick={() => {
-              router.reload();
+              router.replace("/");
             }}
           >
             <Button text="Reload" />

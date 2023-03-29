@@ -160,6 +160,7 @@ export default function Login() {
           <div
             className="mt-4"
             onClick={() => {
+              router.push("/guest");
               router.push("/");
             }}
           >

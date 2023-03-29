@@ -34,7 +34,7 @@ const ShopThumbnail = (
         <Link href={isGuest ? `/guest/shops/${id}` : `/shops/${id}`}>
           <a className="flex items-center justify-center py-4">
             {imageId ? (
-              <img src={imageId} className="w-64" />
+              <img src={imageId} className="w-64 h-64" />
             ) : (
               <div className="w-64 h-64 bg-slate-200" />
             )}
